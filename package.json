@@ -1,0 +1,18 @@
+{
+  "name": "FlipperApp",
+  "version": "0.0.0",
+  "description": "",
+  "devDependencies": {
+    "grunt": "~0.4.4",
+    "grunt-node-webkit-builder": "^0.1.20",
+    "load-grunt-tasks": "^0.4.0"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "author": "",
+  "license": "ISC"
+}
