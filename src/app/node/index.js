@@ -50,9 +50,10 @@ function() {
 
 
 
-  Game.dispatch('swe1');
-  Game.dispatch('LeftFlipperButton', {state: false});
-  Game.dispatch('LeftFlipperButton', {state: true});
+//  Game.dispatch('swe1');
+//  Game.dispatch('LeftFlipperButton', {state: false});
+//  Game.dispatch('LeftFlipperButton', {state: true});
+
 //Game.dispatch('start');
 
 

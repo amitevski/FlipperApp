@@ -1,11 +1,8 @@
 'use strict';
 
 angular
-  .module('flipperUiApp', [])
+  .module('flipperUiApp', ['fuMenu'])
   .run(function() {
-    console.log(process.mainModule);
-//    process.mainModule.exports.runServer();
     var server = require('./node/index');
-//    console.log(server);
     server.runServer();
   });

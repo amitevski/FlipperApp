@@ -12,8 +12,11 @@ Base = {
           switch (args.state) {
             case false:
               console.log('fire solenoid');
+
+              break;
             case true:
               console.log('release solenoid');
+              break;
             default:
           }
         }
