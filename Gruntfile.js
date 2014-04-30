@@ -17,10 +17,17 @@ module.exports = function(grunt) {
         linux64: false
       },
       src: ['src/app/**/*']
+    },
+
+    exec: {
+      dev: {
+        cwd: 'dist/cache/mac/0.9.2/',
+        cmd: 'open -a node-webkit ../../../../src/app/'
+      }
     }
   });
 
   // Default task(s).
-  grunt.registerTask('default', ['nodewebkit']);
+  grunt.registerTask('default', ['exec:dev']);
 
 };
