@@ -17,7 +17,6 @@ var ui = proxyquire(root + 'helpers/ui',
 
 describe('UI', function() {
   beforeEach(function() {
-//    currentUI = new ui();
   });
   it('should only create one instance', function() {
     var a = require(root + 'helpers/ui');

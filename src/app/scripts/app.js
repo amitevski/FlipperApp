@@ -8,10 +8,4 @@ angular
     $urlRouterProvider.otherwise('/menu');
     //
     // Now set up the st
-  })
-  .run(function() {
-    var server = require('./node/index');
-    server.runServer();
-//    server.Game.dispatch('swe1');
-//    process.mainModule.exports.runServer();
   });

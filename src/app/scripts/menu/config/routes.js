@@ -2,6 +2,7 @@
  * Created by acomitevski on 03/05/14.
  */
 
+'use strict';
 
 angular.module('fuMenu')
   .config(function($stateProvider){

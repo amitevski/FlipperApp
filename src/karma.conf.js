@@ -12,11 +12,14 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
       'app/bower_components/angular/angular.js',
+      'app/bower_components/angular-ui-bootstrap-bower/ui-bootstrap-tpls.js',
+      'app/bower_components/angular-ui-router/release/angular-ui-router.js',
       'app/bower_components/angular-mocks/angular-mocks.js',
       'app/scripts/*.js',
       'app/scripts/menu/*.js',
       'app/scripts/menu/**/*.js',
-      'test/mock/**/*.js',
+      'app/scripts/nodeInterface/*.js',
+      'app/scripts/nodeInterface/**/*.js',
       'test/spec/**/*.js'
     ],
 
@@ -44,6 +47,11 @@ module.exports = function(config) {
     // - PhantomJS
     // - IE (only Windows)
     browsers: ['Chrome'],
+
+    plugins: [
+      'karma-chrome-launcher',
+      'karma-jasmine'
+    ],
 
 
     // Continuous Integration mode
