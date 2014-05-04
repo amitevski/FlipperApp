@@ -5,7 +5,10 @@
 'use strict';
 
 angular.module('fuNodeInterface')
-  .factory('uiInterface', function() {
+  .factory('uiInterface', function($state) {
     var ui = require('./node/helpers/ui');
+//    ui.on('startGame', function(gameName) {
+//      $state.go('game', {game: gameName});
+//    });
     return ui;
   });

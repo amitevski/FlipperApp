@@ -6,7 +6,8 @@
 
 angular.module('fuNodeInterface')
   .factory('serverInterface', function() {
-    var server = require('./node/index');
-    server.runServer();
-    return server.Game;
+    var Server = require('./node/index'),
+      server = new Server();
+    server.run();
+    return server;
   });

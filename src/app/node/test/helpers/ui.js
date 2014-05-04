@@ -23,14 +23,14 @@ describe('UI', function() {
     var b = require(root + 'helpers/ui');
     expect(a).to.equal(b);
   });
-  describe('addPoints', function() {
+  describe('setPoints', function() {
     it('should emit given points', function() {
-      ui.addPoints(10);
-      expect(emitSpy).calledWith('addPoints', 10);
+      ui.setPoints(10);
+      expect(emitSpy).calledWith('setPoints', 10);
     });
   });
   describe('startGame', function() {
-    it('should emit starGame', function() {
+    it('should emit startGame', function() {
       ui.startGame('swe1');
       expect(emitSpy).calledWith('startGame', 'swe1');
     });

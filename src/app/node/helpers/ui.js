@@ -11,8 +11,8 @@ function UI() {}
 
 util.inherits(UI, EventEmitter2);
 
-UI.prototype.addPoints = function(points) {
-  this.emit('addPoints', points);
+UI.prototype.setPoints = function(points) {
+  this.emit('setPoints', points);
 };
 
 UI.prototype.startGame = function(gameTitle) {

@@ -10,16 +10,12 @@ angular.module('fuMenu')
 
 
     $scope.startSelectedGame = function() {
-      $state.go('game', {game: $scope.selectedGame});
-      console.log($scope.selectedGame);
-      serverInterface.dispatch($scope.selectedGame);
+      $state.go('game', {gameName: $scope.selectedGame});
+      serverInterface.HSM.dispatch($scope.selectedGame);
     };
 
 
-    $scope.games = [
-      {title: 'swe1'},
-      {title: 'soccer'}
-    ];
+    $scope.games = serverInterface.games;
 
     $scope.selectedGame = $scope.games[0].title;
     $scope.prev = function() {
@@ -38,7 +34,6 @@ angular.module('fuMenu')
       }
     };
     $scope.next = function() {
-      console.log('next');
       for (var i in $scope.games) {
         var game = $scope.games[i];
         if (true === game.active) {

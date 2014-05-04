@@ -14,12 +14,17 @@ describe('Controller: MenuController', function () {
   var MenuController,
     scope,
     uiInterfaceMock = jasmine.createSpyObj('uiInterface', ['on']),
-    serverInterfaceMock = jasmine.createSpyObj('serverInterface', ['dispatch']),
+    serverInterfaceMock = jasmine.createSpyObj('serverInterface', ['HSM', 'games']),
     stateMock = jasmine.createSpyObj('state', ['go']);
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope) {
     scope = $rootScope.$new();
+    serverInterfaceMock.games = [
+      {title: 'swe1', active: true},
+      {title: 'soccer', active: false}
+    ];
+    serverInterfaceMock.HSM.dispatch = jasmine.createSpy('dispatch');
     MenuController = $controller('MenuController', {
       $scope: scope
       ,uiInterface: uiInterfaceMock
@@ -35,7 +40,7 @@ describe('Controller: MenuController', function () {
     it('should transition to game page', function() {
       scope.selectedGame = 'test';
       scope.startSelectedGame();
-      expect(stateMock.go).toHaveBeenCalledWith('game', {game: 'test'});
+      expect(stateMock.go).toHaveBeenCalledWith('game', {gameName: 'test'});
     });
   });
 

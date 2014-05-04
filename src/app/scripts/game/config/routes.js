@@ -9,7 +9,7 @@ angular.module('fuGame')
   .config(function($stateProvider){
     $stateProvider
       .state('game', {
-        url: '/game',
+        url: '/game/:gameName',
         templateUrl: 'scripts/game/views/game.html',
         controller: 'GameController'
       });

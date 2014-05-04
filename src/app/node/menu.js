@@ -2,10 +2,19 @@
 
 module.exports = function(ui, solenoid, lamp) {
   return {
+
+    points: 0,
+
     initialState: 'Menu',
 
     states: {
       inGame: {
+        addPoints: {
+          action: function(points) {
+            this.points += points;
+            ui.setPoints(this.points);
+          }
+        },
         LeftFlipperButton: {
           action: function (args) {
             switch (args.state) {

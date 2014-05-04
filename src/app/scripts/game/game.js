@@ -4,4 +4,4 @@
 
 'use strict';
 
-angular.module('fuGame', []);
+angular.module('fuGame', ['ui.router']);

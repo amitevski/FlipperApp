@@ -5,4 +5,4 @@
 
 'use strict';
 
-angular.module('fuNodeInterface', []);
+angular.module('fuNodeInterface', ['ui.router']);

@@ -10,12 +10,18 @@ var ui = require('./helpers/ui'),
   flipperDriver = require('FlipperDriver').createDefault();
 
 
+function FlipperServer() {
+  this.games = [];
+}
+
+
+
 /**
  * load module and inject dependencies
  * @param module
  * @returns {*}
  */
-var loadGameDefinitions = function(module) {
+FlipperServer.prototype.loadGameDefinitions = function(module) {
   //inject Angular ui, solenoid and lamp
   return module(ui,
     flipperDriver.driverFacade.solenoid,
@@ -29,18 +35,19 @@ var loadGameDefinitions = function(module) {
  * @param menu
  * @param gamesPath
  */
-var mergeGames =
+FlipperServer.prototype.mergeGames =
   function(menu, gamesPath) {
     var files = fs.readdirSync(gamesPath);
     var currentGame,
       currentFile;
     for (var i = 0, len = files.length; i < len; i++) {
       currentFile = [gamesPath, files[i]].join('/');
-      currentGame = loadGameDefinitions(require(currentFile));
+      currentGame = this.loadGameDefinitions(require(currentFile));
       for (var game in currentGame) {
         // add event for current game, that transitions to selected game
         menu.states[menu.initialState][game] = {target: game};
         _.extend(menu.states.inGame.states, currentGame);
+        this.games.push({title: game});
       }
     }
   };
@@ -49,11 +56,11 @@ var mergeGames =
  * load games from gamesPath
  * @returns {*}
  */
-var loadGames =
+FlipperServer.prototype.loadHSM =
   function() {
-    var menu = loadGameDefinitions(require('./menu'));
-    mergeGames(menu, gamesPath);
-    return menu;
+    var menuHSM = this.loadGameDefinitions(require('./menu'));
+    this.mergeGames(menuHSM, gamesPath);
+    return menuHSM;
   };
 
 
@@ -61,38 +68,33 @@ var loadGames =
  * get events from flipperModel and dispatch to Game FSM
  * @param game
  */
-var bindFlipperEvents = function(game) {
-  flipperDriver.flipperModel.onAny(function(value){
-    game.dispatch(value.name, value);
+FlipperServer.prototype.bindFlipperEvents =
+  function(game) {
+    flipperDriver.flipperModel.onAny(function(value){
+      game.dispatch(value.name, value);
   });
 
 //  flipperDriver.flipperModel.emit('RightActionButton', {name: 'RightActionButton'});
-//  setTimeout(function() {
-//    flipperDriver.flipperModel.emit('RightActionButton', {name: 'RightActionButton'});
-////    setTimeout(function() {
-////      game.dispatch('LeftActionButton');
-////    }, 1000);
-//  }, 2*1000);
+  setTimeout(function() {
+    flipperDriver.flipperModel.emit('start', {name: 'start'});
+    setTimeout(function() {
+      game.dispatch('addPoints', 10000);
+    }, 1000);
+  }, 2*1000);
 
 };
 
-var runServer =
-function() {
-  this.Game = _.extend(loadGames(), Statechart);
+FlipperServer.prototype.run =
+  function() {
+    this.HSM = _.extend(this.loadHSM(), Statechart);
 
-  this.Game.run({ debug: function(msg) {
+    this.HSM.run({ debug: function(msg) {
 
-    console.log(msg);
+      console.log(msg);
 
-  } });
+    } });
 
-  bindFlipperEvents(this.Game);
+    this.bindFlipperEvents(this.HSM);
+  };
 
-//  Game.dispatch('swe1');
-//  Game.dispatch('LeftFlipperButton', {state: false});
-//  Game.dispatch('LeftFlipperButton', {state: true});
-
-};
-
-exports.runServer =  runServer;
-//runServer();
+module.exports = FlipperServer;
