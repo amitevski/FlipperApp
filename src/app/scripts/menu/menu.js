@@ -3,4 +3,4 @@
  */
 
 
-angular.module('fuMenu', []);
+angular.module('fuMenu', ['ui.bootstrap', 'ui.router']);
