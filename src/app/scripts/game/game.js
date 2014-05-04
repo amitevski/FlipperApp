@@ -4,4 +4,4 @@
 
 'use strict';
 
-angular.modules('fuGame', []);
+angular.module('fuGame', []);

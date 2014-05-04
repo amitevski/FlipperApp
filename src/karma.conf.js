@@ -20,6 +20,8 @@ module.exports = function(config) {
       'app/scripts/menu/**/*.js',
       'app/scripts/nodeInterface/*.js',
       'app/scripts/nodeInterface/**/*.js',
+      'app/scripts/game/*.js',
+      'app/scripts/game/**/*.js',
       'test/spec/**/*.js'
     ],
 

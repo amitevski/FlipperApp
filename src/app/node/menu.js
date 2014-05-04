@@ -35,11 +35,19 @@ module.exports = function(ui, solenoid, lamp) {
             ui.startSelectedGame();
           }
         },
+        RightActionButton: {
+          action: function() {
+            ui.nextGame();
+          }
+        },
+        LeftActionButton: {
+          action: function() {
+            ui.prevGame();
+          }
+        },
         states: {},
         entry: function () {
           ui.openMenu();
-          console.log('dummy');
-          //update ui state
         }
       }
     }

@@ -38,4 +38,56 @@ describe('Controller: MenuController', function () {
       expect(stateMock.go).toHaveBeenCalledWith('game', {game: 'test'});
     });
   });
+
+  describe('next', function() {
+    it('should set next game as selected', function() {
+      scope.games = [
+        {title: 'swe1', active: true},
+        {title: 'soccer', active: false}
+      ];
+      expect(scope.selectedGame).toBe('swe1');
+      expect(scope.games[0].active).toBe(true);
+      scope.next();
+      expect(scope.selectedGame).toBe('soccer');
+      expect(scope.games[1].active).toBe(true);
+    });
+    it('should go to first element if its last', function() {
+      scope.games = [
+        {title: 'swe1', active: false},
+        {title: 'soccer', active: true}
+      ];
+      scope.selectedGame = 'soccer';
+      expect(scope.selectedGame).toBe('soccer');
+      expect(scope.games[1].active).toBe(true);
+      scope.next();
+      expect(scope.selectedGame).toBe('swe1');
+      expect(scope.games[0].active).toBe(true);
+    });
+  });
+
+  describe('prev', function() {
+    it('should set prev game as selected', function() {
+      scope.games = [
+        {title: 'swe1', active: false},
+        {title: 'soccer', active: true}
+      ];
+      scope.selectedGame = 'soccer';
+      expect(scope.selectedGame).toBe('soccer');
+      expect(scope.games[1].active).toBe(true);
+      scope.prev();
+      expect(scope.selectedGame).toBe('swe1');
+      expect(scope.games[0].active).toBe(true);
+    });
+    it('should go to last element if we are on the first element', function() {
+      scope.games = [
+        {title: 'swe1', active: true},
+        {title: 'soccer', active: false}
+      ];
+      expect(scope.selectedGame).toBe('swe1');
+      expect(scope.games[0].active).toBe(true);
+      scope.prev();
+      expect(scope.selectedGame).toBe('soccer');
+      expect(scope.games[1].active).toBe(true);
+    });
+  });
 });

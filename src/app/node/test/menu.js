@@ -16,8 +16,10 @@ describe('Menu HSM', function() {
 
   beforeEach(function() {
     uiMock = {
-      openMenu: sinon.spy(),
-      startSelectedGame: sinon.spy()
+      openMenu: sinon.spy()
+      ,startSelectedGame: sinon.spy()
+      ,nextGame: sinon.spy()
+      ,prevGame: sinon.spy()
     };
     MenuHsm = _.extend(menu(uiMock), Statechart);
   });
@@ -42,4 +44,21 @@ describe('Menu HSM', function() {
       uiMock.openMenu.should.have.been.calledOnce;
     });
   });
+
+  describe('RightActionButton', function() {
+    it('should select next game', function() {
+      MenuHsm.run();
+      MenuHsm.dispatch('RightActionButton');
+      uiMock.nextGame.should.have.been.calledOnce;
+    });
+  });
+
+  describe('LeftActionButton', function() {
+    it('should select next game', function() {
+      MenuHsm.run();
+      MenuHsm.dispatch('LeftActionButton');
+      uiMock.prevGame.should.have.been.calledOnce;
+    });
+  });
+
 });

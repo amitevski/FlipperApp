@@ -29,4 +29,13 @@ UI.prototype.startSelectedGame = function() {
 };
 
 
+UI.prototype.nextGame = function() {
+  this.emit('nextGame');
+};
+
+UI.prototype.prevGame = function() {
+  this.emit('prevGame');
+};
+
+
 module.exports = new UI();

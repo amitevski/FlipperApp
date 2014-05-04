@@ -10,7 +10,7 @@ angular.module('fuGame')
     $stateProvider
       .state('game', {
         url: '/game',
-        templateUrl: 'scripts/game/views/menu.html',
+        templateUrl: 'scripts/game/views/game.html',
         controller: 'GameController'
       });
   });

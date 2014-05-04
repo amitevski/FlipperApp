@@ -66,7 +66,14 @@ var bindFlipperEvents = function(game) {
     game.dispatch(value.name, value);
   });
 
-//  flipperDriver.flipperModel.emit('swe1', {name: 'swe1'});
+//  flipperDriver.flipperModel.emit('RightActionButton', {name: 'RightActionButton'});
+//  setTimeout(function() {
+//    flipperDriver.flipperModel.emit('RightActionButton', {name: 'RightActionButton'});
+////    setTimeout(function() {
+////      game.dispatch('LeftActionButton');
+////    }, 1000);
+//  }, 2*1000);
+
 };
 
 var runServer =

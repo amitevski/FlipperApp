@@ -6,5 +6,5 @@
 
 angular.module('fuGame')
   .controller('GameController', function($scope) {
-
+    console.log('loading game');
   });
