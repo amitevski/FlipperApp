@@ -2,6 +2,8 @@
  * Created by acomitevski on 30/04/14.
  */
 
+'use strict';
+
 module.exports = function(grunt) {
 
   // Load grunt tasks automatically
@@ -23,6 +25,18 @@ module.exports = function(grunt) {
       server: {
         src: ['test/spechelper.js', 'test/**/*.js']
       }
+    },
+    jshint: {
+      options: {
+        jshintrc: '.jshintrc',
+        reporter: require('jshint-stylish')
+      },
+      all: [
+        '*.js',
+        'games/**/*.js',
+        'helpers/**/*.js',
+        'test/**/*.js',
+      ]
     }
 
   });

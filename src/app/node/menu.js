@@ -2,7 +2,7 @@
 
 module.exports = function(ui, solenoid, lamp) {
   return {
-    initialState: "Menu",
+    initialState: 'Menu',
 
     states: {
       inGame: {
@@ -32,7 +32,7 @@ module.exports = function(ui, solenoid, lamp) {
         // Menu events
         start: {
           action: function () {
-            ui.startSelectedGame()
+            ui.startSelectedGame();
           }
         },
         states: {},
@@ -43,5 +43,5 @@ module.exports = function(ui, solenoid, lamp) {
         }
       }
     }
-  }
+  };
 };

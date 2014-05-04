@@ -12,9 +12,9 @@ module.exports = function(ui, solenoid, lamp) {
       entry: function () {
         //update ui state
         lamp.on('StartButton');
-        console.log("entering swe1");
+        console.log('entering swe1');
       }
     }
-  }
+  };
 };
 

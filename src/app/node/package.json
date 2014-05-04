@@ -16,11 +16,14 @@
     "eventemitter2": "^0.4.13"
   },
   "devDependencies": {
-    "grunt-simple-mocha": "^0.4.0",
-    "sinon": "^1.9.1",
-    "sinon-chai": "^2.5.0",
     "chai": "^1.9.1",
+    "grunt": "^0.4.4",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-simple-mocha": "^0.4.0",
+    "jshint-stylish": "^0.2.0",
+    "mocha": "^1.18.2",
     "proxyquire": "^0.6.0",
-    "mocha": "^1.18.2"
+    "sinon": "^1.9.1",
+    "sinon-chai": "^2.5.0"
   }
 }

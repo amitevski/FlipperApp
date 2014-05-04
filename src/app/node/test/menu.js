@@ -3,6 +3,8 @@
  */
 'use strict';
 
+/*jshint expr: true*/
+
 var uiMock,
   menu = require(root + 'menu'),
   _ = require('underscore'),
@@ -17,7 +19,7 @@ describe('Menu HSM', function() {
       openMenu: sinon.spy(),
       startSelectedGame: sinon.spy()
     };
-    MenuHsm = _.extend(menu(uiMock), Statechart)
+    MenuHsm = _.extend(menu(uiMock), Statechart);
   });
   afterEach(function() {
     MenuHsm = null;

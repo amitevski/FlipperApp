@@ -13,6 +13,6 @@ module.exports = function(ui, solenoid, lamp) {
         //update ui state
       }
     }
-  }
+  };
 };
 

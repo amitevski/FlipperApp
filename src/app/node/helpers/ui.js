@@ -2,6 +2,8 @@
  * Created by acomitevski on 30/04/14.
  */
 
+'use strict';
+
 var util = require('util'),
   EventEmitter2 = require('eventemitter2').EventEmitter2;
 
@@ -27,4 +29,4 @@ UI.prototype.startSelectedGame = function() {
 };
 
 
-module.exports = new UI;
+module.exports = new UI();

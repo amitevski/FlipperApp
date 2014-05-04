@@ -40,7 +40,7 @@ var mergeGames =
       for (var game in currentGame) {
         // add event for current game, that transitions to selected game
         menu.states[menu.initialState][game] = {target: game};
-        _.extend(menu.states['inGame'].states, currentGame);
+        _.extend(menu.states.inGame.states, currentGame);
       }
     }
   };
@@ -53,7 +53,7 @@ var loadGames =
   function() {
     var menu = loadGameDefinitions(require('./menu'));
     mergeGames(menu, gamesPath);
-    return menu
+    return menu;
   };
 
 
