@@ -22,4 +22,9 @@ UI.prototype.openMenu = function() {
 };
 
 
+UI.prototype.getSelectedGame = function() {
+  this.emit('getSelectedGame');
+};
+
+
 module.exports = new UI;

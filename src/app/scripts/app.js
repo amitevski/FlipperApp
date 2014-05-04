@@ -12,4 +12,6 @@ angular
   .run(function() {
     var server = require('./node/index');
     server.runServer();
+//    server.Game.dispatch('swe1');
+//    process.mainModule.exports.runServer();
   });
