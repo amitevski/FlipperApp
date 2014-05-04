@@ -66,7 +66,7 @@ var bindFlipperEvents = function(game) {
     game.dispatch(value.name, value);
   });
 
-  flipperDriver.flipperModel.emit('swe1', {name: 'swe1'});
+//  flipperDriver.flipperModel.emit('swe1', {name: 'swe1'});
 };
 
 var runServer =

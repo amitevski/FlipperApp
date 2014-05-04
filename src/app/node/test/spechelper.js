@@ -8,5 +8,7 @@ var chai = require('chai'),
 
 global.expect = chai.expect;
 global.sinon = require('sinon');
+global.proxyquire = require('proxyquire');
 global.root = __dirname + '/../';
+chai.should();
 chai.use(sinonChai);

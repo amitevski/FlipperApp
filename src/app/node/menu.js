@@ -32,7 +32,7 @@ module.exports = function(ui, solenoid, lamp) {
         // Menu events
         start: {
           action: function () {
-            ui.getSelectedGame()
+            ui.startSelectedGame()
           }
         },
         states: {},

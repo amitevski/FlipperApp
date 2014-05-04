@@ -2,7 +2,6 @@
  * Created by acomitevski on 30/04/14.
  */
 
-var proxyquire = require('proxyquire');
 
 var emitSpy = sinon.spy();
 function EmitterMock() {}

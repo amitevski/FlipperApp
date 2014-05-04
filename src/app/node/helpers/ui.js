@@ -22,8 +22,8 @@ UI.prototype.openMenu = function() {
 };
 
 
-UI.prototype.getSelectedGame = function() {
-  this.emit('getSelectedGame');
+UI.prototype.startSelectedGame = function() {
+  this.emit('startSelectedGame');
 };
 
 
