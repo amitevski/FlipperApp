@@ -76,16 +76,17 @@ FlipperServer.prototype.bindFlipperEvents =
 
 //  flipperDriver.flipperModel.emit('RightActionButton', {name: 'RightActionButton'});
   setTimeout(function() {
-    flipperDriver.flipperModel.emit('start', {name: 'start'});
-    setTimeout(function() {
-      game.dispatch('addPoints', 10000);
-    }, 1000);
+    flipperDriver.flipperModel.emit('RightActionButton', {name: 'RightActionButton'});
+//    setTimeout(function() {
+//      game.dispatch('RightActionButton');
+//    }, 1000);
   }, 2*1000);
 
 };
 
 FlipperServer.prototype.run =
   function() {
+    flipperDriver.start();
     this.HSM = _.extend(this.loadHSM(), Statechart);
 
     this.HSM.run({ debug: function(msg) {
