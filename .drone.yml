@@ -2,6 +2,7 @@ image: dockerfile/nodejs
 script:
   - npm install -g grunt-cli
   - cd src/app/node
+  - npm install
   - grunt
 notify:
   email:
