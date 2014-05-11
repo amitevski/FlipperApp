@@ -1,62 +1,101 @@
 'use strict';
 
 
-var base = require('./menu'),
+var ui = require('./helpers/ui'),
   _ = require('underscore'),
   fs = require('fs'),
   path = require('path'),
   Statechart = require('statechart'),
-  gamesPath = path.join(__dirname, 'games');
+  gamesPath = path.join(__dirname, 'games'),
+  flipperDriver = require('FlipperDriver').createDefault();
 
-var FlipperDriver = require('FlipperDriver');
-var flipperDriver = FlipperDriver.createDefault();
-//
-//flipperDriver.flipperModel.onAny(function(value){
-//  console.log(arguments);
-//});
-//
-//flipperDriver.flipperModel.emit('test1', {name: 'test2'});
-//
-//return;
 
-var mergeGames =
-  function(files, filePath) {
+function FlipperServer() {
+  this.games = [];
+}
+
+
+
+/**
+ * load module and inject dependencies
+ * @param module
+ * @returns {*}
+ */
+FlipperServer.prototype.loadGameDefinitions = function(module) {
+  //inject Angular ui, solenoid and lamp
+  return module(ui,
+    flipperDriver.driverFacade.solenoid,
+    flipperDriver.driverFacade.lamp
+  );
+};
+
+
+/**
+ * merge
+ * @param menu
+ * @param gamesPath
+ */
+FlipperServer.prototype.mergeGames =
+  function(menu, gamesPath) {
+    var files = fs.readdirSync(gamesPath);
     var currentGame,
       currentFile;
     for (var i = 0, len = files.length; i < len; i++) {
-      currentFile = [filePath, files[i]].join('/');
-      currentGame = require(currentFile);
+      currentFile = [gamesPath, files[i]].join('/');
+      currentGame = this.loadGameDefinitions(require(currentFile));
       for (var game in currentGame) {
-        base.states[base.initialState][game] = {target: game};
-        _.extend(base.states['inGame'].states, currentGame);
+        // add event for current game, that transitions to selected game
+        menu.states[menu.initialState][game] = {target: game};
+        _.extend(menu.states.inGame.states, currentGame);
+        this.games.push({title: game});
       }
     }
   };
 
-var runServer =
-function() {
-  var files = fs.readdirSync(gamesPath);
-  mergeGames(files, gamesPath);
+/**
+ * load games from gamesPath
+ * @returns {*}
+ */
+FlipperServer.prototype.loadHSM =
+  function() {
+    var menuHSM = this.loadGameDefinitions(require('./menu'));
+    this.mergeGames(menuHSM, gamesPath);
+    return menuHSM;
+  };
 
 
-  var Game = _.extend(base, Statechart);
+/**
+ * get events from flipperModel and dispatch to Game FSM
+ * @param game
+ */
+FlipperServer.prototype.bindFlipperEvents =
+  function(game) {
+    flipperDriver.flipperModel.onAny(function(value){
+      game.dispatch(value.name, value);
+  });
 
-
-  Game.run({ debug: function(msg) {
-
-    console.log(msg);
-
-  } });
-
-
-
-  Game.dispatch('swe1');
-  Game.dispatch('LeftFlipperButton', {state: false});
-  Game.dispatch('LeftFlipperButton', {state: true});
-//Game.dispatch('start');
-
+//  flipperDriver.flipperModel.emit('RightActionButton', {name: 'RightActionButton'});
+  setTimeout(function() {
+    flipperDriver.flipperModel.emit('RightActionButton', {name: 'RightActionButton'});
+//    setTimeout(function() {
+//      game.dispatch('RightActionButton');
+//    }, 1000);
+  }, 2*1000);
 
 };
 
-exports.runServer =  runServer;
-//runServer();
+FlipperServer.prototype.run =
+  function() {
+    flipperDriver.start();
+    this.HSM = _.extend(this.loadHSM(), Statechart);
+
+    this.HSM.run({ debug: function(msg) {
+
+      console.log(msg);
+
+    } });
+
+    this.bindFlipperEvents(this.HSM);
+  };
+
+module.exports = FlipperServer;

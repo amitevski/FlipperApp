@@ -1,19 +1,18 @@
 'use strict';
 
 
-var Game;
+module.exports = function(ui, solenoid, lamp) {
+  return {
 
-Game = {
+    soccer: {
+      states: {
 
-  soccer: {
-    states: {
+      },
 
-    },
-
-    entry: function () {
+      entry: function () {
         //update ui state
+      }
     }
-  }
+  };
 };
 
-module.exports = Game;

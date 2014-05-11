@@ -1,20 +1,20 @@
 'use strict';
 
+module.exports = function(ui, solenoid, lamp) {
+  return {
 
-var Game;
 
-Game = {
+    swe1: {
 
-  swe1: {
+      states: {
 
-    states: {
-
-    },
-    entry: function () {
+      },
+      entry: function () {
         //update ui state
-      console.log("entering swe1");
+        lamp.on('StartButton');
+        console.log('entering swe1');
+      }
     }
-  }
+  };
 };
 
-module.exports = Game;

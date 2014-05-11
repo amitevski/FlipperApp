@@ -5,7 +5,8 @@
   "devDependencies": {
     "grunt": "~0.4.4",
     "grunt-node-webkit-builder": "^0.1.20",
-    "load-grunt-tasks": "^0.4.0"
+    "load-grunt-tasks": "^0.4.0",
+    "grunt-exec": "^0.4.5"
   },
   "engines": {
     "node": ">=0.10.0"

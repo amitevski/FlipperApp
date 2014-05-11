@@ -9,18 +9,26 @@ module.exports = function(grunt) {
 
     nodewebkit: {
       options: {
+	      version: '0.8.4',
         build_dir: './dist',
         // specifiy what to build
         mac: true,
         win: false,
         linux32: false,
-        linux64: false
+        linux64: true
       },
       src: ['src/app/**/*']
+    },
+
+    exec: {
+      dev: {
+        cwd: 'dist/cache/mac/0.8.4/',
+        cmd: 'open -a node-webkit ../../../../src/app/'
+      }
     }
   });
 
   // Default task(s).
-  grunt.registerTask('default', ['nodewebkit']);
+  grunt.registerTask('default', ['exec:dev']);
 
 };

@@ -1,41 +1,64 @@
 'use strict';
 
-var Base;
+module.exports = function(ui, solenoid, lamp) {
+  return {
 
-Base = {
-  initialState: "Menu",
+    points: 0,
 
-  states: {
-    inGame: {
-      LeftFlipperButton: {
-        action: function(args) {
-          switch (args.state) {
-            case false:
-              console.log('fire solenoid');
-            case true:
-              console.log('release solenoid');
-            default:
+    initialState: 'Menu',
+
+    states: {
+      inGame: {
+        addPoints: {
+          action: function(points) {
+            this.points += points;
+            ui.setPoints(this.points);
           }
+        },
+        LeftFlipperButton: {
+          action: function (args) {
+            switch (args.state) {
+              case false:
+                console.log('fire solenoid');
+
+                break;
+              case true:
+                console.log('release solenoid');
+                break;
+              default:
+            }
+          }
+        },
+        start: {target: 'Menu'},
+        states: {
+        },
+        entry: function () {
+          console.log('entering game');
+          //update ui state
         }
       },
-      start: {target: 'Menu'},
-      states: {
-      },
-      entry: function() {
-        console.log('entering game');
-      //update ui state
-      }
-    },
-    Menu: {
-      // Menu events
-
-      states: {},
-      entry: function() {
-        console.log('dummy');
-        //update ui state
+      Menu: {
+        // Menu events
+        start: {
+          action: function () {
+            ui.startSelectedGame();
+          }
+        },
+        RightActionButton: {
+          action: function() {
+            ui.nextGame();
+          }
+        },
+        LeftActionButton: {
+          action: function() {
+            ui.prevGame();
+          }
+        },
+        states: {},
+        entry: function () {
+          ui.openMenu();
+        }
       }
     }
-  }
+  };
 };
-
-module.exports = Base;

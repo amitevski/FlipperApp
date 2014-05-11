@@ -1,11 +1,11 @@
 'use strict';
 
 angular
-  .module('flipperUiApp', [])
-  .run(function() {
-    console.log(process.mainModule);
-//    process.mainModule.exports.runServer();
-    var server = require('./node/index');
-//    console.log(server);
-    server.runServer();
+  .module('flipperUiApp', ['fuMenu', 'fuGame', 'ui.bootstrap', 'ui.router'])
+  .config(function($urlRouterProvider) {
+    //
+    // For any unmatched url, redirect to /menu
+    $urlRouterProvider.otherwise('/menu');
+    //
+    // Now set up the st
   });
