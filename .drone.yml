@@ -1,0 +1,9 @@
+image: node:0.10
+script:
+  - sudo npm install -g grunt-cli
+  - cd src/app/node
+  - grunt
+notify:
+  email:
+    recipients:
+      - aco.mitevski@gmail.com
