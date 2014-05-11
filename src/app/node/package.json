@@ -25,6 +25,6 @@
     "proxyquire": "^0.6.0",
     "sinon": "^1.9.1",
     "sinon-chai": "^2.5.0",
-    "load-grunt-tasks": "~0.4.0",
+    "load-grunt-tasks": "~0.4.0"
   }
 }
