@@ -9,10 +9,10 @@ module.exports = function(grunt) {
 
     nodewebkit: {
       options: {
-	version: '0.8.4',
+	      version: '0.8.4',
         build_dir: './dist',
         // specifiy what to build
-        mac: false,
+        mac: true,
         win: false,
         linux32: false,
         linux64: true
@@ -22,7 +22,7 @@ module.exports = function(grunt) {
 
     exec: {
       dev: {
-        cwd: 'dist/cache/mac/0.9.2/',
+        cwd: 'dist/cache/mac/0.8.4/',
         cmd: 'open -a node-webkit ../../../../src/app/'
       }
     }
