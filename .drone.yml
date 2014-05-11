@@ -1,6 +1,6 @@
-image: node0.10
+image: dockerfile/nodejs
 script:
-  - sudo npm install -g grunt-cli
+  - npm install -g grunt-cli
   - cd src/app/node
   - grunt
 notify:
