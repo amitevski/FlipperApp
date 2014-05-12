@@ -1,6 +1,6 @@
 {
   "name": "Pinball2000",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "index.html",
   "node-main": "",
   "single-instance": true,
