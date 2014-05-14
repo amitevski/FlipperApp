@@ -39,7 +39,7 @@ describe('Menu HSM', function() {
   describe('start', function() {
     it('should start selected game in ui', function() {
       MenuHsm.run();
-      MenuHsm.dispatch('start');
+      MenuHsm.dispatch('StartDown');
       uiMock.startSelectedGame.should.have.been.calledOnce;
       uiMock.openMenu.should.have.been.calledOnce;
     });

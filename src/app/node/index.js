@@ -71,16 +71,22 @@ FlipperServer.prototype.loadHSM =
 FlipperServer.prototype.bindFlipperEvents =
   function(game) {
     flipperDriver.flipperModel.onAny(function(value){
-      game.dispatch(value.name, value);
+      // create different event types for down/up events
+      if (value.state) {
+        game.dispatch(value.name + 'Down', value);
+      } else {
+        game.dispatch(value.name + 'Up', value);
+      }
   });
 
 //  flipperDriver.flipperModel.emit('RightActionButton', {name: 'RightActionButton'});
-//  setTimeout(function() {
-//    flipperDriver.flipperModel.emit('RightActionButton', {name: 'RightActionButton'});
-//    setTimeout(function() {
-//      game.dispatch('RightActionButton');
-//    }, 1000);
-//  }, 2*1000);
+  setTimeout(function() {
+    flipperDriver.flipperModel.emit('Start', {name: 'Start', state: true});
+    flipperDriver.flipperModel.emit('Start', {name: 'Start', state: false});
+    setTimeout(function() {
+      flipperDriver.flipperModel.emit('RightActionButton', {name: 'RightActionButton', state: true});
+    }, 1000);
+  }, 2*1000);
 
 };
 

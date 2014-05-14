@@ -15,21 +15,27 @@ module.exports = function(ui, solenoid, lamp) {
             ui.setPoints(this.points);
           }
         },
-        LeftFlipperButton: {
-          action: function (args) {
-            switch (args.state) {
-              case false:
-                console.log('fire solenoid');
-
-                break;
-              case true:
-                console.log('release solenoid');
-                break;
-              default:
-            }
+        LeftFlipperButtonDown: {
+          action: function () {
+            console.log('fire left action solenoid');
           }
         },
-        start: {target: 'Menu'},
+        LeftFlipperButtonUp: {
+          action: function () {
+            console.log('release left action solenoid');
+          }
+        },
+        RightFlipperButtonDown: {
+          action: function () {
+            console.log('fire right action solenoid');
+          }
+        },
+        RightFlipperButtonUp: {
+          action: function () {
+            console.log('release right action solenoid');
+          }
+        },
+        StartDown: {target: 'Menu'},
         states: {
         },
         entry: function () {
@@ -39,7 +45,7 @@ module.exports = function(ui, solenoid, lamp) {
       },
       Menu: {
         // Menu events
-        start: {
+        StartDown: {
           action: function () {
             ui.startSelectedGame();
           }
