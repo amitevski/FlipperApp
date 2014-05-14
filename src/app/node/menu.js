@@ -17,29 +17,43 @@ module.exports = function(ui, solenoid, lamp) {
         },
         LeftFlipperButtonDown: {
           action: function () {
-            console.log('fire left action solenoid');
+            solenoid.fire('LeftFlipperPower');
+            this.leftFlipperHoldTimer = setTimeout(function() {
+              solenoid.fire('LeftFlipperHold');
+            }, 20);
           }
         },
         LeftFlipperButtonUp: {
           action: function () {
-            console.log('release left action solenoid');
+            if (this.leftFlipperHoldTimer) {
+              clearTimeout(this.leftFlipperHoldTimer);
+              this.leftFlipperHoldTimer = null;
+            }
+            solenoid.release('LeftFlipperHold');
           }
         },
         RightFlipperButtonDown: {
           action: function () {
-            console.log('fire right action solenoid');
+            solenoid.fire('RightFlipperPower');
+            this.rightFlipperHoldTimer = setTimeout(function() {
+              solenoid.fire('RightFlipperHold');
+            }, 20);
           }
         },
         RightFlipperButtonUp: {
           action: function () {
-            console.log('release right action solenoid');
+            if (this.rightFlipperHoldTimer) {
+              clearTimeout(this.rightFlipperHoldTimer);
+              this.rightFlipperHoldTimer = null;
+            }
+            solenoid.release('RightFlipperHold');
           }
         },
         StartDown: {target: 'Menu'},
         states: {
         },
         entry: function () {
-          console.log('entering game');
+//          console.log('entering game');
           //update ui state
         }
       },

@@ -42,6 +42,6 @@ module.exports = function(grunt) {
   });
 
   // Default task(s).
-  grunt.registerTask('default', ['simplemocha']);
+  grunt.registerTask('default', ['jshint', 'simplemocha']);
 
 };
