@@ -81,7 +81,7 @@ describe('Menu HSM', function() {
         MenuHsm.run();
         MenuHsm.dispatch('ingame');
         MenuHsm.dispatch('LeftFlipperButtonDown');
-        MenuHsm.leftFlipperHoldTimer.should.be.defined;
+        MenuHsm.LeftFlipperHoldTimer.should.be.defined;
       });
       it('should fire LeftFlipperHold solenoid after timeout', function(done) {
         MenuHsm.states.Menu.ingame = {target: 'inGame'};
@@ -101,7 +101,7 @@ describe('Menu HSM', function() {
         MenuHsm.dispatch('ingame');
         MenuHsm.dispatch('LeftFlipperButtonDown');
         MenuHsm.dispatch('LeftFlipperButtonUp');
-        expect(MenuHsm.leftFlipperHoldTimer).to.equal(null);
+        expect(MenuHsm.LeftFlipperHoldTimer).to.equal(null);
       });
       it('should release LeftFlipperHold solenoid', function () {
         MenuHsm.states.Menu.ingame = {target: 'inGame'};
@@ -126,7 +126,7 @@ describe('Menu HSM', function() {
         MenuHsm.run();
         MenuHsm.dispatch('ingame');
         MenuHsm.dispatch('RightFlipperButtonDown');
-        MenuHsm.rightFlipperHoldTimer.should.be.defined;
+        MenuHsm.RightFlipperHoldTimer.should.be.defined;
       });
       it('should fire RightFlipperHold solenoid after timeout', function(done) {
         MenuHsm.states.Menu.ingame = {target: 'inGame'};
@@ -147,7 +147,7 @@ describe('Menu HSM', function() {
         MenuHsm.dispatch('ingame');
         MenuHsm.dispatch('RightFlipperButtonDown');
         MenuHsm.dispatch('RightFlipperButtonUp');
-        expect(MenuHsm.rightFlipperHoldTimer).to.equal(null);
+        expect(MenuHsm.RightFlipperHoldTimer).to.equal(null);
       });
       it('should release RightFlipperHold solenoid', function () {
         MenuHsm.states.Menu.ingame = {target: 'inGame'};
