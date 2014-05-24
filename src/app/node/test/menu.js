@@ -8,6 +8,7 @@
 
 var uiMock,
   solenoidMock,
+  lampMock,
   menu = require(root + 'menu'),
   _ = require('underscore'),
   Statechart = require('statechart'),
@@ -22,12 +23,17 @@ describe('Menu HSM', function() {
       ,startSelectedGame: sinon.spy()
       ,nextGame: sinon.spy()
       ,prevGame: sinon.spy()
+      ,setPoints: sinon.spy()
     };
     solenoidMock = {
       fire: sinon.spy()
       ,release: sinon.spy()
     };
-    MenuHsm = _.extend(menu(uiMock, solenoidMock), Statechart);
+    lampMock = {
+      on: sinon.spy()
+      ,off: sinon.spy()
+    };
+    MenuHsm = _.extend(menu(uiMock, solenoidMock, lampMock), Statechart);
   });
   afterEach(function() {
     MenuHsm = null;
@@ -157,6 +163,46 @@ describe('Menu HSM', function() {
         MenuHsm.dispatch('RightFlipperButtonUp');
         solenoidMock.release.should.have.been.calledWith('RightFlipperHold');
       });
+    });
+
+    describe('SlingshotDown', function() {
+      ['Left', 'Right'].map(function(side) {
+        describe(side + 'SlingshotDown', function() {
+
+          it('should blink '+ side +' sling GI lamps', function(done) {
+            MenuHsm.states.Menu.ingame = {target: 'inGame'};
+            MenuHsm.run();
+            MenuHsm.dispatch('ingame');
+            MenuHsm.dispatch(side + 'SlingshotDown');
+            lampMock.on.should.have.been.calledWith(side + 'SlingGIUpper');
+            lampMock.on.should.have.been.calledWith(side + 'SlingGILower');
+            setTimeout(function() {
+              lampMock.off.should.have.been.calledWith(side + 'SlingGIUpper');
+              lampMock.off.should.have.been.calledWith(side + 'SlingGILower');
+              done();
+            }, 110);
+          });
+
+          it('should fire '+ side +' slingshot solenoid', function() {
+            MenuHsm.states.Menu.ingame = {target: 'inGame'};
+            MenuHsm.run();
+            MenuHsm.dispatch('ingame');
+            MenuHsm.dispatch(side + 'SlingshotDown');
+            solenoidMock.fire.should.have.been.calledWith(side + 'Slingshot');
+          });
+
+
+          it('should add 10.000 points', function() {
+            MenuHsm.states.Menu.ingame = {target: 'inGame'};
+            MenuHsm.run();
+            MenuHsm.dispatch('ingame');
+            MenuHsm.dispatch(side + 'SlingshotDown');
+            uiMock.setPoints.should.have.been.calledWith(10000);
+          });
+        });
+      });
+
+
     });
   });
 
