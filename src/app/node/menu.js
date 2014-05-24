@@ -10,16 +10,19 @@ module.exports = function(ui, solenoid, lamp) {
     states: {
       inGame: {
         UpperJetBumperDown: function() {
-          this.dispatch('BlinkLamp', {id:'UpperJet', duration:20});
           solenoid.fire('UpperBumper');
+          this.dispatch('BlinkLamp', {id:'UpperJet', duration:20});
+          this.dispatch('addPoints', 5000);
         },
         MiddleJetBumperDown: function() {
-          this.dispatch('BlinkLamp', {id:'MiddleJets', duration:20});
           solenoid.fire('MiddleBumper');
+          this.dispatch('BlinkLamp', {id:'MiddleJets', duration:20});
+          this.dispatch('addPoints', 5000);
         },
         LowerJetBumperDown: function() {
-          this.dispatch('BlinkLamp', {id:'LowerJet', duration:20});
           solenoid.fire('LowerBumper');
+          this.dispatch('BlinkLamp', {id:'LowerJet', duration:20});
+          this.dispatch('addPoints', 5000);
         },
         LeftSlingshotDown: function() {
           this.dispatch('Slingshot', 'Left');

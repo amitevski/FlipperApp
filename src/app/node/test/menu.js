@@ -184,27 +184,52 @@ describe('Menu HSM', function() {
           });
 
           it('should add 10.000 points', function() {
-            uiMock.setPoints.should.have.been.calledWith(10000);
+            expect(MenuHsm.points).to.equal(10000);
           });
         });
       });
 
-      describe('UpperJetBumperDown', function() {
-        beforeEach(function() {
-          MenuHsm.dispatch('UpperJetBumperDown');
+      describe('JetBumperDown', function() {
+        ['Upper', 'Lower'].map(function(pos) {
+          describe(pos + 'JetBumperDown', function() {
+            beforeEach(function() {
+              MenuHsm.points = 0;
+              MenuHsm.dispatch(pos + 'JetBumperDown');
+            });
+            it('should blink '+ pos +' Jet Lamp', function(done) {
+              lampMock.on.should.have.been.calledWith(pos +'Jet');
+              setTimeout(function() {
+                lampMock.off.should.have.been.calledWith(pos + 'Jet');
+                done();
+              }, 25);
+            });
+            it('should fire '+ pos +' bumper', function() {
+              solenoidMock.fire.should.have.been.calledWith(pos + 'Bumper');
+            });
+            it('should add 5.000 points', function() {
+              expect(MenuHsm.points).to.equal(5000);
+            });
+          });
         });
-        it('should blink UpperJet Lamp', function(done) {
-          lampMock.on.should.have.been.calledWith('UpperJet');
-          setTimeout(function() {
-            lampMock.off.should.have.been.calledWith('UpperJet');
-            done();
-          }, 25);
-        });
-        it('should fire upper bumper', function() {
-          solenoidMock.fire.should.have.been.calledWith('UpperBumper');
+        describe('MiddleJetBumperDown', function() {
+          beforeEach(function() {
+            MenuHsm.dispatch('MiddleJetBumperDown');
+          });
+          it('should blink MiddleJet Lamp', function(done) {
+            lampMock.on.should.have.been.calledWith('MiddleJets');
+            setTimeout(function() {
+              lampMock.off.should.have.been.calledWith('MiddleJets');
+              done();
+            }, 25);
+          });
+          it('should fire Middle bumper', function() {
+            solenoidMock.fire.should.have.been.calledWith('MiddleBumper');
+          });
+          it('should add 5.000 points', function() {
+            expect(MenuHsm.points).to.equal(5000);
+          });
         });
       });
-
     });
   });
 });
