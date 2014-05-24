@@ -41,22 +41,22 @@ module.exports = function(ui, solenoid, lamp) {
         },
         LeftFlipperButtonDown: {
           action: function () {
-            this.dispatch('FlipperButtonDown', 'Left')
+            this.dispatch('FlipperButtonDown', 'Left');
           }
         },
         LeftFlipperButtonUp: {
           action: function () {
-            this.dispatch('FlipperButtonUp', 'Left')
+            this.dispatch('FlipperButtonUp', 'Left');
           }
         },
         RightFlipperButtonDown: {
           action: function () {
-            this.dispatch('FlipperButtonDown', 'Right')
+            this.dispatch('FlipperButtonDown', 'Right');
           }
         },
         RightFlipperButtonUp: {
           action: function () {
-            this.dispatch('FlipperButtonUp', 'Right')
+            this.dispatch('FlipperButtonUp', 'Right');
           }
         },
         FlipperButtonDown: {
