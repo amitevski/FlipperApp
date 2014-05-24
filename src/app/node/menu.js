@@ -77,11 +77,25 @@ module.exports = function(ui, solenoid, lamp) {
           }
         },
         StartDown: {target: 'Menu'},
+        BaseLights: function(mode) {
+          lamp[mode]('BottomArchLeftLeft');
+          lamp[mode]('BottomArchRightRight');
+          lamp[mode]('BottomArchRightLeft');
+          lamp[mode]('BottomArchLeftRight');
+          lamp[mode]('StartButton');
+        },
         states: {
         },
         entry: function () {
-//          console.log('entering game');
-          //update ui state
+          var that = this;
+          // wait for transition to inGame to finish
+          // otherwise BaseLights is not defined
+          setTimeout(function() {
+            that.dispatch('BaseLights', 'on');
+          }, 0);
+        },
+        exit: function() {
+          this.dispatch('BaseLights', 'off');
         }
       },
       Menu: {
@@ -104,6 +118,12 @@ module.exports = function(ui, solenoid, lamp) {
         states: {},
         entry: function () {
           ui.openMenu();
+          this.lampInterval = setInterval(function() {
+            lamp.toggle('StartButton');
+          }, 1000);
+        },
+        exit: function() {
+          clearInterval(this.lampInterval);
         }
       }
     }

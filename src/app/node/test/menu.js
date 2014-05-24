@@ -32,6 +32,7 @@ describe('Menu HSM', function() {
     lampMock = {
       on: sinon.spy()
       ,off: sinon.spy()
+      ,toggle: sinon.spy()
     };
     MenuHsm = _.extend(menu(uiMock, solenoidMock, lampMock), Statechart);
   });
@@ -74,6 +75,36 @@ describe('Menu HSM', function() {
   });
 
   describe('inGame State', function() {
+    describe('entry', function() {
+      it('should turn on base ambient lights', function(done) {
+        MenuHsm.states.Menu.ingame = {target: 'inGame'};
+        MenuHsm.run();
+        MenuHsm.dispatch('ingame');
+        setTimeout(function() {
+          lampMock.on.should.have.been.calledWith('BottomArchLeftLeft');
+          lampMock.on.should.have.been.calledWith('BottomArchRightRight');
+          lampMock.on.should.have.been.calledWith('BottomArchRightLeft');
+          lampMock.on.should.have.been.calledWith('BottomArchLeftRight');
+          lampMock.on.should.have.been.calledWith('StartButton');
+          done();
+        }, 10);
+
+      });
+    });
+    describe('exit', function() {
+      it('should turn off base ambient lights', function() {
+        MenuHsm.states.Menu.ingame = {target: 'inGame'};
+        MenuHsm.run();
+        MenuHsm.dispatch('ingame');
+        MenuHsm.dispatch('StartDown');
+        lampMock.off.should.have.been.calledWith('BottomArchLeftLeft');
+        lampMock.off.should.have.been.calledWith('BottomArchRightRight');
+        lampMock.off.should.have.been.calledWith('BottomArchRightLeft');
+        lampMock.off.should.have.been.calledWith('BottomArchLeftRight');
+        lampMock.off.should.have.been.calledWith('StartButton');
+
+      });
+    });
     describe('LeftFlipperButtonDown', function() {
       it('should fire LeftFlipperPower solenoid', function() {
         MenuHsm.states.Menu.ingame = {target: 'inGame'};
