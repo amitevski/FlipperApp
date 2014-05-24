@@ -42,8 +42,6 @@ describe('Menu HSM', function() {
   });
 
   describe('entry', function() {
-    beforeEach(function() {
-    });
     it('should open menu in ui', function() {
       MenuHsm.run();
       uiMock.openMenu.should.have.been.calledOnce;
@@ -75,11 +73,13 @@ describe('Menu HSM', function() {
   });
 
   describe('inGame State', function() {
+    beforeEach(function() {
+      MenuHsm.states.Menu.ingame = {target: 'inGame'};
+      MenuHsm.run();
+      MenuHsm.dispatch('ingame');
+    });
     describe('entry', function() {
       it('should turn on base ambient lights', function(done) {
-        MenuHsm.states.Menu.ingame = {target: 'inGame'};
-        MenuHsm.run();
-        MenuHsm.dispatch('ingame');
         setTimeout(function() {
           lampMock.on.should.have.been.calledWith('BottomArchLeftLeft');
           lampMock.on.should.have.been.calledWith('BottomArchRightRight');
@@ -93,9 +93,6 @@ describe('Menu HSM', function() {
     });
     describe('exit', function() {
       it('should turn off base ambient lights', function() {
-        MenuHsm.states.Menu.ingame = {target: 'inGame'};
-        MenuHsm.run();
-        MenuHsm.dispatch('ingame');
         MenuHsm.dispatch('StartDown');
         lampMock.off.should.have.been.calledWith('BottomArchLeftLeft');
         lampMock.off.should.have.been.calledWith('BottomArchRightRight');
@@ -107,23 +104,14 @@ describe('Menu HSM', function() {
     });
     describe('LeftFlipperButtonDown', function() {
       it('should fire LeftFlipperPower solenoid', function() {
-        MenuHsm.states.Menu.ingame = {target: 'inGame'};
-        MenuHsm.run();
-        MenuHsm.dispatch('ingame');
         MenuHsm.dispatch('LeftFlipperButtonDown');
         solenoidMock.fire.should.have.been.calledWith('LeftFlipperPower');
       });
       it('should start timer for LeftFlipperHold solenoid', function() {
-        MenuHsm.states.Menu.ingame = {target: 'inGame'};
-        MenuHsm.run();
-        MenuHsm.dispatch('ingame');
         MenuHsm.dispatch('LeftFlipperButtonDown');
         MenuHsm.LeftFlipperHoldTimer.should.be.defined;
       });
       it('should fire LeftFlipperHold solenoid after timeout', function(done) {
-        MenuHsm.states.Menu.ingame = {target: 'inGame'};
-        MenuHsm.run();
-        MenuHsm.dispatch('ingame');
         MenuHsm.dispatch('LeftFlipperButtonDown');
         setTimeout(function() {
           solenoidMock.fire.should.have.been.calledWith('LeftFlipperHold');
@@ -132,66 +120,45 @@ describe('Menu HSM', function() {
       });
     });
     describe('LeftFlipperButtonUp', function() {
-      it('should clear  LeftFlipperHold timer', function () {
-        MenuHsm.states.Menu.ingame = {target: 'inGame'};
-        MenuHsm.run();
-        MenuHsm.dispatch('ingame');
+      beforeEach(function() {
         MenuHsm.dispatch('LeftFlipperButtonDown');
         MenuHsm.dispatch('LeftFlipperButtonUp');
+      });
+      it('should clear  LeftFlipperHold timer', function () {
         expect(MenuHsm.LeftFlipperHoldTimer).to.equal(null);
       });
       it('should release LeftFlipperHold solenoid', function () {
-        MenuHsm.states.Menu.ingame = {target: 'inGame'};
-        MenuHsm.run();
-        MenuHsm.dispatch('ingame');
-        MenuHsm.dispatch('LeftFlipperButtonDown');
-        MenuHsm.dispatch('LeftFlipperButtonUp');
         solenoidMock.release.should.have.been.calledWith('LeftFlipperHold');
       });
     });
     describe('RightFlipperButtonDown', function() {
-      it('should fire RightFlipperPower solenoid', function() {
-        MenuHsm.states.Menu.ingame = {target: 'inGame'};
-        MenuHsm.run();
-        MenuHsm.dispatch('ingame');
+      beforeEach(function() {
         MenuHsm.dispatch('RightFlipperButtonDown');
+      });
+      it('should fire RightFlipperPower solenoid', function() {
         solenoidMock.fire.should.have.been.calledWith('RightFlipperPower');
       });
 
       it('should start timer for RightFlipperHold solenoid', function() {
-        MenuHsm.states.Menu.ingame = {target: 'inGame'};
-        MenuHsm.run();
-        MenuHsm.dispatch('ingame');
-        MenuHsm.dispatch('RightFlipperButtonDown');
         MenuHsm.RightFlipperHoldTimer.should.be.defined;
       });
       it('should fire RightFlipperHold solenoid after timeout', function(done) {
-        MenuHsm.states.Menu.ingame = {target: 'inGame'};
-        MenuHsm.run();
-        MenuHsm.dispatch('ingame');
-        MenuHsm.dispatch('RightFlipperButtonDown');
         setTimeout(function() {
           solenoidMock.fire.should.have.been.calledWith('RightFlipperHold');
           done();
-        }, 22);
+        }, 25);
       });
     });
 
     describe('RightFlipperButtonUp', function() {
-      it('should clear  RightFlipperHold timer', function () {
-        MenuHsm.states.Menu.ingame = {target: 'inGame'};
-        MenuHsm.run();
-        MenuHsm.dispatch('ingame');
+      beforeEach(function() {
         MenuHsm.dispatch('RightFlipperButtonDown');
         MenuHsm.dispatch('RightFlipperButtonUp');
+      });
+      it('should clear  RightFlipperHold timer', function () {
         expect(MenuHsm.RightFlipperHoldTimer).to.equal(null);
       });
       it('should release RightFlipperHold solenoid', function () {
-        MenuHsm.states.Menu.ingame = {target: 'inGame'};
-        MenuHsm.run();
-        MenuHsm.dispatch('ingame');
-        MenuHsm.dispatch('RightFlipperButtonDown');
-        MenuHsm.dispatch('RightFlipperButtonUp');
         solenoidMock.release.should.have.been.calledWith('RightFlipperHold');
       });
     });
@@ -199,12 +166,10 @@ describe('Menu HSM', function() {
     describe('SlingshotDown', function() {
       ['Left', 'Right'].map(function(side) {
         describe(side + 'SlingshotDown', function() {
-
-          it('should blink '+ side +' sling GI lamps', function(done) {
-            MenuHsm.states.Menu.ingame = {target: 'inGame'};
-            MenuHsm.run();
-            MenuHsm.dispatch('ingame');
+          beforeEach(function() {
             MenuHsm.dispatch(side + 'SlingshotDown');
+          });
+          it('should blink '+ side +' sling GI lamps', function(done) {
             lampMock.on.should.have.been.calledWith(side + 'SlingGIUpper');
             lampMock.on.should.have.been.calledWith(side + 'SlingGILower');
             setTimeout(function() {
@@ -215,30 +180,20 @@ describe('Menu HSM', function() {
           });
 
           it('should fire '+ side +' slingshot solenoid', function() {
-            MenuHsm.states.Menu.ingame = {target: 'inGame'};
-            MenuHsm.run();
-            MenuHsm.dispatch('ingame');
-            MenuHsm.dispatch(side + 'SlingshotDown');
             solenoidMock.fire.should.have.been.calledWith(side + 'Slingshot');
           });
 
-
           it('should add 10.000 points', function() {
-            MenuHsm.states.Menu.ingame = {target: 'inGame'};
-            MenuHsm.run();
-            MenuHsm.dispatch('ingame');
-            MenuHsm.dispatch(side + 'SlingshotDown');
             uiMock.setPoints.should.have.been.calledWith(10000);
           });
         });
       });
 
       describe('UpperJetBumperDown', function() {
-        it('should blink UpperJet Lamp', function(done) {
-          MenuHsm.states.Menu.ingame = {target: 'inGame'};
-          MenuHsm.run();
-          MenuHsm.dispatch('ingame');
+        beforeEach(function() {
           MenuHsm.dispatch('UpperJetBumperDown');
+        });
+        it('should blink UpperJet Lamp', function(done) {
           lampMock.on.should.have.been.calledWith('UpperJet');
           setTimeout(function() {
             lampMock.off.should.have.been.calledWith('UpperJet');
@@ -246,10 +201,6 @@ describe('Menu HSM', function() {
           }, 25);
         });
         it('should fire upper bumper', function() {
-          MenuHsm.states.Menu.ingame = {target: 'inGame'};
-          MenuHsm.run();
-          MenuHsm.dispatch('ingame');
-          MenuHsm.dispatch('UpperJetBumperDown');
           solenoidMock.fire.should.have.been.calledWith('UpperBumper');
         });
       });
