@@ -9,74 +9,66 @@ module.exports = function(ui, solenoid, lamp) {
 
     states: {
       inGame: {
-        LeftSlingshotDown: {
-          action: function() {
-            this.dispatch('Slingshot', 'Left');
-          }
+        UpperJetBumperDown: function() {
+          this.dispatch('BlinkLamp', {id:'UpperJet', duration:20});
+          solenoid.fire('UpperBumper');
         },
-        RightSlingshotDown: {
-          action: function() {
-            this.dispatch('Slingshot', 'Right');
-          }
+        MiddleJetBumperDown: function() {
+          this.dispatch('BlinkLamp', {id:'MiddleJets', duration:20});
+          solenoid.fire('MiddleBumper');
         },
-        Slingshot: {
-          action: function(side) {
-            lamp.on(side + 'SlingGIUpper');
-            lamp.on(side + 'SlingGILower');
-            solenoid.fire(side + 'Slingshot');
-            // TODO: move this to DriverFacade
-            // and expose API method blink()
-            setTimeout(function() {
-              lamp.off(side + 'SlingGIUpper');
-              lamp.off(side + 'SlingGILower');
-            }, 100);
-            this.dispatch('addPoints', 10000);
-          }
+        LowerJetBumperDown: function() {
+          this.dispatch('BlinkLamp', {id:'LowerJet', duration:20});
+          solenoid.fire('LowerBumper');
         },
-        addPoints: {
-          action: function(points) {
-            this.points += points;
-            ui.setPoints(this.points);
-          }
+        LeftSlingshotDown: function() {
+          this.dispatch('Slingshot', 'Left');
         },
-        LeftFlipperButtonDown: {
-          action: function () {
-            this.dispatch('FlipperButtonDown', 'Left');
-          }
+        RightSlingshotDown: function() {
+          this.dispatch('Slingshot', 'Right');
         },
-        LeftFlipperButtonUp: {
-          action: function () {
-            this.dispatch('FlipperButtonUp', 'Left');
-          }
+        Slingshot: function(side) {
+          this.dispatch('BlinkLamp', {id: side + 'SlingGIUpper', duration:20});
+          this.dispatch('BlinkLamp', {id: side + 'SlingGILower', duration:20});
+          solenoid.fire(side + 'Slingshot');
+          this.dispatch('addPoints', 10000);
         },
-        RightFlipperButtonDown: {
-          action: function () {
-            this.dispatch('FlipperButtonDown', 'Right');
-          }
+        addPoints: function(points) {
+          this.points += points;
+          ui.setPoints(this.points);
         },
-        RightFlipperButtonUp: {
-          action: function () {
-            this.dispatch('FlipperButtonUp', 'Right');
-          }
+        LeftFlipperButtonDown: function () {
+          this.dispatch('FlipperButtonDown', 'Left');
         },
-        FlipperButtonDown: {
-          action: function (side) {
-            solenoid.fire(side + 'FlipperPower');
-            this[side + 'FlipperHoldTimer'] = setTimeout(function() {
-              solenoid.fire(side + 'FlipperHold');
-            }, 20);
-          }
+        LeftFlipperButtonUp: function () {
+          this.dispatch('FlipperButtonUp', 'Left');
         },
-        FlipperButtonUp: {
-          action: function (side) {
-            if (this[side + 'FlipperHoldTimer']) {
-              clearTimeout(this[side + 'FlipperHoldTimer']);
-              this[side + 'FlipperHoldTimer'] = null;
-            }
-            solenoid.release(side + 'FlipperHold');
+        RightFlipperButtonDown: function () {
+          this.dispatch('FlipperButtonDown', 'Right');
+        },
+        RightFlipperButtonUp: function () {
+          this.dispatch('FlipperButtonUp', 'Right');
+        },
+        FlipperButtonDown: function (side) {
+          solenoid.fire(side + 'FlipperPower');
+          this[side + 'FlipperHoldTimer'] = setTimeout(function() {
+            solenoid.fire(side + 'FlipperHold');
+          }, 20);
+        },
+        FlipperButtonUp: function (side) {
+          if (this[side + 'FlipperHoldTimer']) {
+            clearTimeout(this[side + 'FlipperHoldTimer']);
+            this[side + 'FlipperHoldTimer'] = null;
           }
+          solenoid.release(side + 'FlipperHold');
         },
         StartDown: {target: 'Menu'},
+        BlinkLamp: function(opts) {
+          lamp.on(opts.id);
+          setTimeout(function() {
+            lamp.off(opts.id);
+          }, opts.duration);
+        },
         BaseLights: function(mode) {
           lamp[mode]('BottomArchLeftLeft');
           lamp[mode]('BottomArchRightRight');
@@ -100,20 +92,14 @@ module.exports = function(ui, solenoid, lamp) {
       },
       Menu: {
         // Menu events
-        StartDown: {
-          action: function () {
-            ui.startSelectedGame();
-          }
+        StartDown: function () {
+          ui.startSelectedGame();
         },
-        RightActionButton: {
-          action: function() {
-            ui.nextGame();
-          }
+        RightActionButton: function() {
+          ui.nextGame();
         },
-        LeftActionButton: {
-          action: function() {
-            ui.prevGame();
-          }
+        LeftActionButton: function() {
+          ui.prevGame();
         },
         states: {},
         entry: function () {

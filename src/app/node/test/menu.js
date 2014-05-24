@@ -211,7 +211,7 @@ describe('Menu HSM', function() {
               lampMock.off.should.have.been.calledWith(side + 'SlingGIUpper');
               lampMock.off.should.have.been.calledWith(side + 'SlingGILower');
               done();
-            }, 110);
+            }, 25);
           });
 
           it('should fire '+ side +' slingshot solenoid', function() {
@@ -233,8 +233,27 @@ describe('Menu HSM', function() {
         });
       });
 
+      describe('UpperJetBumperDown', function() {
+        it('should blink UpperJet Lamp', function(done) {
+          MenuHsm.states.Menu.ingame = {target: 'inGame'};
+          MenuHsm.run();
+          MenuHsm.dispatch('ingame');
+          MenuHsm.dispatch('UpperJetBumperDown');
+          lampMock.on.should.have.been.calledWith('UpperJet');
+          setTimeout(function() {
+            lampMock.off.should.have.been.calledWith('UpperJet');
+            done();
+          }, 25);
+        });
+        it('should fire upper bumper', function() {
+          MenuHsm.states.Menu.ingame = {target: 'inGame'};
+          MenuHsm.run();
+          MenuHsm.dispatch('ingame');
+          MenuHsm.dispatch('UpperJetBumperDown');
+          solenoidMock.fire.should.have.been.calledWith('UpperBumper');
+        });
+      });
 
     });
   });
-
 });
