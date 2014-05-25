@@ -25,7 +25,18 @@ module.exports = function(grunt) {
         cwd: 'dist/cache/mac/0.8.4/',
         cmd: 'open -a node-webkit ../../../../src/app/'
       }
+    },
+
+    hub: {
+      test: {
+        src: [
+          'src/app/node/Gruntfile.js',
+          'src/Gruntfile.js'
+        ],
+        tasks: ['test']
+      }
     }
+
   });
 
   // Default task(s).

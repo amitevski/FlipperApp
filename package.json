@@ -4,16 +4,22 @@
   "description": "",
   "devDependencies": {
     "grunt": "~0.4.4",
+    "grunt-exec": "^0.4.5",
+    "grunt-hub": "^0.6.2",
     "grunt-node-webkit-builder": "^0.1.20",
-    "load-grunt-tasks": "^0.4.0",
-    "grunt-exec": "^0.4.5"
+    "load-grunt-tasks": "^0.4.0"
   },
   "engines": {
     "node": ">=0.10.0"
   },
   "scripts": {
+    "install-deps": "bash -c 'pushd src/; npm install; bower install; popd; pushd src/app/node; npm install; popd;'",
     "test": "grunt test"
   },
   "author": "Aco Mitevski",
-  "license": "ISC"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/amitevski/FlipperApp.git"
+  }
 }
