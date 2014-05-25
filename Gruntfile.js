@@ -12,9 +12,9 @@ module.exports = function(grunt) {
 	      version: '0.8.4',
         build_dir: './dist',
         // specifiy what to build
-        mac: true,
+        mac: false,
         win: false,
-        linux32: false,
+        linux32: true,
         linux64: true
       },
       src: ['src/app/**/*']
@@ -34,6 +34,12 @@ module.exports = function(grunt) {
           'src/Gruntfile.js'
         ],
         tasks: ['test']
+      },
+      buildfrontend: {
+        src: [
+          'src/Gruntfile.js'
+        ],
+        tasks: ['build']
       }
     }
 
@@ -41,5 +47,6 @@ module.exports = function(grunt) {
 
   // Default task(s).
   grunt.registerTask('default', ['exec:dev']);
+  grunt.registerTask('build', ['hub:buildfrontend', 'nodewebkit']);
 
 };

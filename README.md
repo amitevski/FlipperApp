@@ -19,8 +19,8 @@ We are using parport2 low-level driver, which is only available for linux.
 
 ### Build
 
-1. ```grunt nodewebkit```
-1. The executable can be found at ```dist/releases/Pinball2000```
+1. ```grunt build```
+1. The executables can be found at ```dist/releases/Pinball2000```
 
 ### Run
 
