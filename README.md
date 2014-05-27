@@ -13,9 +13,17 @@ We are using parport2 low-level driver, which is only available for linux.
 ### Libraries
 
 1. for new ubuntu follow the instructions at https://github.com/rogerwang/node-webkit/wiki/The-solution-of-lacking-libudev.so.0
-1. ```npm install -g grunt-cli bower```
+1. ```sudo npm install -g grunt-cli bower```
 1. ```npm install```
 1. ```npm run-script install-deps```
+1. because we use compass for frontend we need ruby and compass
+    1. ```sudo apt-get install ruby```
+    1. ```gem install compass```
+1. because node-webkit 0.9.x uses node 0.11 we need to build parport2 manually
+    1. ```sudo npm install -g nw-gyp```
+    1. ```cd src/app/node/node_modules/FlipperDriver/node_modules/parport2```
+    1. ```nw-gyp configure --target=0.8.4```
+    1. ```nw-gyp build```
 
 ### Build
 
