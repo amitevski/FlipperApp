@@ -76,21 +76,21 @@ FlipperServer.prototype.bindFlipperEvents =
       // create different event types for down/up events
       if (value.state) {
         game.dispatch(value.name + 'Down', value);
-      } else if (value.name in upAndDown) {
+      } else if (upAndDown.indexOf(value.name) >= 0) {
         game.dispatch(value.name + 'Up', value);
       }
   });
 
-//  flipperDriver.flipperModel.emit('RightActionButton', {name: 'RightActionButton'});
+/*  flipperDriver.flipperModel.emit('RightActionButton', {name: 'RightActionButton'});
   setTimeout(function() {
     flipperDriver.flipperModel.emit('Start', {name: 'Start', state: true});
     flipperDriver.flipperModel.emit('Start', {name: 'Start', state: false});
     setTimeout(function() {
-//      flipperDriver.flipperModel.emit('RightActionButton', {name: 'RightActionButton', state: true});
+      flipperDriver.flipperModel.emit('RightActionButton', {name: 'RightActionButton', state: true});
       game.dispatch('LeftSlingshotDown');
     }, 1000);
   }, 2*1000);
-
+*/
 };
 
 FlipperServer.prototype.run =

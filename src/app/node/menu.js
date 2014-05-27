@@ -65,7 +65,9 @@ module.exports = function(ui, solenoid, lamp) {
           }
           solenoid.release(side + 'FlipperHold');
         },
-        StartDown: {target: 'Menu'},
+        //start button too sensitive
+        // TODO: implement other option to end game
+        //StartDown: {target: 'Menu'},
         BlinkLamp: function(opts) {
           lamp.on(opts.id);
           setTimeout(function() {
@@ -79,10 +81,14 @@ module.exports = function(ui, solenoid, lamp) {
           lamp[mode]('BottomArchLeftRight');
           lamp[mode]('StartButton');
         },
+        TroughBall4Down: function() {
+          solenoid.fire('TroughEject');
+        },
         states: {
         },
         entry: function () {
           var that = this;
+          solenoid.fire('TroughEject');
           // wait for transition to inGame to finish
           // otherwise BaseLights is not defined
           setTimeout(function() {
@@ -98,10 +104,10 @@ module.exports = function(ui, solenoid, lamp) {
         StartDown: function () {
           ui.startSelectedGame();
         },
-        RightActionButton: function() {
+        RightActionButtonDown: function() {
           ui.nextGame();
         },
-        LeftActionButton: function() {
+        LeftActionButtonDown: function() {
           ui.prevGame();
         },
         states: {},

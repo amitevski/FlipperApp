@@ -59,7 +59,7 @@ describe('Menu HSM', function() {
   describe('RightActionButton', function() {
     it('should select next game', function() {
       MenuHsm.run();
-      MenuHsm.dispatch('RightActionButton');
+      MenuHsm.dispatch('RightActionButtonDown');
       uiMock.nextGame.should.have.been.calledOnce;
     });
   });
@@ -67,7 +67,7 @@ describe('Menu HSM', function() {
   describe('LeftActionButton', function() {
     it('should select previous game', function() {
       MenuHsm.run();
-      MenuHsm.dispatch('LeftActionButton');
+      MenuHsm.dispatch('LeftActionButtonDown');
       uiMock.prevGame.should.have.been.calledOnce;
     });
   });
@@ -93,7 +93,7 @@ describe('Menu HSM', function() {
     });
     describe('exit', function() {
       it('should turn off base ambient lights', function() {
-        MenuHsm.dispatch('StartDown');
+        MenuHsm.dispatch('exit');
         lampMock.off.should.have.been.calledWith('BottomArchLeftLeft');
         lampMock.off.should.have.been.calledWith('BottomArchRightRight');
         lampMock.off.should.have.been.calledWith('BottomArchRightLeft');

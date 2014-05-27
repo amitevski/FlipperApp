@@ -52,6 +52,7 @@ angular.module('fuMenu')
     $scope.select = function(game) {
       game.active = true;
       $scope.selectedGame = game.title;
+      $scope.$digest();
     };
 
     uiInterface.on('startSelectedGame', angular.bind($scope, $scope.startSelectedGame));
