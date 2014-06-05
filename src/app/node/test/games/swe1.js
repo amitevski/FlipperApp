@@ -47,4 +47,82 @@ describe('Menu HSM', function() {
       lampMock.on.should.have.been.called;
     });
   });
+  describe('JetBumperDown', function() {
+    beforeEach(function() {
+      Swe1Hsm.run();
+      Swe1Hsm.dispatch('swe1');
+    });
+    ['Upper', 'Lower'].map(function(pos) {
+      describe(pos + 'JetBumperDown', function() {
+        beforeEach(function() {
+          Swe1Hsm.points = 0;
+          Swe1Hsm.dispatch(pos + 'JetBumperDown');
+        });
+        it('should blink '+ pos +' Jet Lamp', function(done) {
+          lampMock.on.should.have.been.calledWith(pos +'Jet');
+          setTimeout(function() {
+            lampMock.off.should.have.been.calledWith(pos + 'Jet');
+            done();
+          }, 25);
+        });
+        it('should fire '+ pos +' bumper', function() {
+          solenoidMock.fire.should.have.been.calledWith(pos + 'Bumper');
+        });
+        it('should add 5.000 points', function() {
+          expect(Swe1Hsm.points).to.equal(5000);
+        });
+      });
+    });
+    describe('MiddleJetBumperDown', function() {
+      beforeEach(function() {
+        Swe1Hsm.dispatch('MiddleJetBumperDown');
+      });
+      it('should blink MiddleJet Lamp', function(done) {
+        lampMock.on.should.have.been.calledWith('MiddleJets');
+        setTimeout(function() {
+          lampMock.off.should.have.been.calledWith('MiddleJets');
+          done();
+        }, 25);
+      });
+      it('should fire Middle bumper', function() {
+        solenoidMock.fire.should.have.been.calledWith('MiddleBumper');
+      });
+      it('should add 5.000 points', function() {
+        expect(Swe1Hsm.points).to.equal(5000);
+      });
+    });
+  });
+
+  describe('SlingshotDown', function() {
+    beforeEach(function() {
+      Swe1Hsm.run();
+      Swe1Hsm.dispatch('swe1');
+    });
+    ['Left', 'Right'].map(function(side) {
+      describe(side + 'SlingshotDown', function() {
+        beforeEach(function() {
+          Swe1Hsm.dispatch(side + 'SlingshotDown');
+        });
+        it('should blink '+ side +' sling GI lamps', function(done) {
+          lampMock.on.should.have.been.calledWith(side + 'SlingGIUpper');
+          lampMock.on.should.have.been.calledWith(side + 'SlingGILower');
+          setTimeout(function() {
+            lampMock.off.should.have.been.calledWith(side + 'SlingGIUpper');
+            lampMock.off.should.have.been.calledWith(side + 'SlingGILower');
+            done();
+          }, 25);
+        });
+
+        it('should fire '+ side +' slingshot solenoid', function() {
+          solenoidMock.fire.should.have.been.calledWith(side + 'Slingshot');
+        });
+
+        it('should add 10.000 points', function() {
+          expect(Swe1Hsm.points).to.equal(10000);
+        });
+      });
+    });
+
+
+  });
 });
