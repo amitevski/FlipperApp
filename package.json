@@ -14,7 +14,7 @@
   },
   "scripts": {
     "install-deps": "bash -c 'pushd src/; npm install; bower install; popd; pushd src/app/node; npm install; popd;'",
-    "test": "grunt test"
+    "test": "grunt hub:test"
   },
   "author": "Aco Mitevski",
   "license": "MIT",

@@ -40,10 +40,15 @@ module.exports = function(ui, solenoid, lamp) {
             pos = opts.pos;
           this[side+'Bank'][pos] = true;
           // if all positions are hit bankFull event is triggered
-          for(var o in this[side+'Bank'])
-            if(!this[side+'Bank'][o]) return;
-          for(var o in this[side+'Bank'])
-            this[side+'Bank'][o] = false;
+          for(var o in this[side+'Bank']) {
+            if (!this[side+'Bank'][o]) {
+              return;
+            }
+          }
+
+          for(var j in this[side+'Bank']) {
+            this[side+'Bank'][j] = false;
+          }
           this.dispatch('bankFull');
         },
         addPoints: function(points) {
@@ -97,7 +102,9 @@ module.exports = function(ui, solenoid, lamp) {
         },
         TroughBall4Down: function() {
           // hack to prevent accidental switch triggers
-          if (this.shooterLaneDown) return;
+          if (this.shooterLaneDown) {
+            return;
+          }
           solenoid.fire('TroughEject');
           this.ballCount--;
           if (0 === this.ballCount) {
