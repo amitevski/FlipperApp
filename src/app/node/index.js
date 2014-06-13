@@ -71,7 +71,7 @@ FlipperServer.prototype.loadHSM =
 FlipperServer.prototype.bindFlipperEvents =
   function(game) {
     // only emit both up and down events for following events
-    var upAndDown = ['LeftFlipperButton', 'RightFlipperButton'];
+    var upAndDown = ['LeftFlipperButton', 'RightFlipperButton', 'ShooterLane'];
     flipperDriver.flipperModel.onAny(function(value){
       // create different event types for down/up events
       if (value.state) {

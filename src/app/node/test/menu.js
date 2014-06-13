@@ -9,6 +9,7 @@
 var uiMock,
   solenoidMock,
   lampMock,
+  sandbox,
   menu = require(root + 'menu'),
   _ = require('underscore'),
   Statechart = require('statechart'),
@@ -18,27 +19,27 @@ var uiMock,
 describe('Menu HSM', function() {
 
   beforeEach(function() {
+    sandbox = sinon.sandbox.create();
     uiMock = {
-      openMenu: sinon.spy()
-      ,startSelectedGame: sinon.spy()
-      ,nextGame: sinon.spy()
-      ,prevGame: sinon.spy()
-      ,setPoints: sinon.spy()
+      openMenu: sandbox.spy()
+      ,startSelectedGame: sandbox.spy()
+      ,nextGame: sandbox.spy()
+      ,prevGame: sandbox.spy()
+      ,setPoints: sandbox.spy()
     };
     solenoidMock = {
-      fire: sinon.spy()
-      ,release: sinon.spy()
+      fire: sandbox.spy()
+      ,release: sandbox.spy()
     };
     lampMock = {
-      on: sinon.spy()
-      ,off: sinon.spy()
-      ,toggle: sinon.spy()
+      on: sandbox.spy()
+      ,off: sandbox.spy()
+      ,toggle: sandbox.spy()
     };
     MenuHsm = _.extend(menu(uiMock, solenoidMock, lampMock), Statechart);
   });
   afterEach(function() {
-    MenuHsm = null;
-    uiMock = null;
+    sandbox.restore();
   });
 
   describe('entry', function() {
@@ -162,7 +163,29 @@ describe('Menu HSM', function() {
         solenoidMock.release.should.have.been.calledWith('RightFlipperHold');
       });
     });
-
+    describe('TroughBall4Down', function() {
+      it('should not fire solenoid if shooter lane is down', function() {
+        MenuHsm.dispatch('ShooterLaneDown');
+        MenuHsm.dispatch('TroughBall4Down');
+        MenuHsm.dispatch('TroughBall4Down');
+        // first call is on entry inGame
+        solenoidMock.fire.should.have.callCount(1);
+      });
+      it('should re-enable TroughEject if shooter lane is up again', function() {
+        MenuHsm.dispatch('ShooterLaneDown');
+        MenuHsm.dispatch('TroughBall4Down');
+        MenuHsm.dispatch('TroughBall4Down');
+        // first call is on entry inGame
+        solenoidMock.fire.should.have.callCount(1);
+        MenuHsm.dispatch('ShooterLaneUp');
+        MenuHsm.dispatch('TroughBall4Down');
+        solenoidMock.fire.should.have.callCount(2);
+      });
+      it('should fire solenoid if shooter lane is up', function() {
+        MenuHsm.dispatch('TroughBall4Down');
+        solenoidMock.fire.should.have.callCount(2);
+      });
+    });
 
   });
 });

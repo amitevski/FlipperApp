@@ -55,8 +55,16 @@ module.exports = function(ui, solenoid, lamp) {
           lamp[mode]('BottomArchLeftRight');
           lamp[mode]('StartButton');
         },
+        ShooterLaneDown: function() {
+          this.shooterLaneDown = true;
+        },
+        ShooterLaneUp: function() {
+          this.shooterLaneDown = false;
+        },
         TroughBall4Down: function() {
-          solenoid.fire('TroughEject');
+          if (!this.shooterLaneDown) {
+            solenoid.fire('TroughEject');
+          }
         },
         states: {
         },
