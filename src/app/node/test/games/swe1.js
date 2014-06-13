@@ -122,7 +122,30 @@ describe('Menu HSM', function() {
         });
       });
     });
+  });
 
-
+  describe('Banks', function() {
+    beforeEach(function() {
+      Swe1Hsm.run();
+      Swe1Hsm.dispatch('swe1');
+    });
+    var sides = ['Left', 'Right'],
+      positions = ['Upper', 'Middle', 'Lower'];
+    describe('Left side', function() {
+      it('should trigger bank full event if all banks are hit', function() {
+        Swe1Hsm.dispatch('LeftBankUpperDown');
+        Swe1Hsm.dispatch('LeftBankMiddleDown');
+        Swe1Hsm.dispatch('LeftBankLowerDown');
+        expect(Swe1Hsm.points).to.equal(500000);
+      });
+    });
+    describe('Right side', function() {
+      it('should trigger bank full event if all banks are hit', function() {
+        Swe1Hsm.dispatch('RightBankUpperDown');
+        Swe1Hsm.dispatch('RightBankMiddleDown');
+        Swe1Hsm.dispatch('RightBankLowerDown');
+        expect(Swe1Hsm.points).to.equal(500000);
+      });
+    });
   });
 });

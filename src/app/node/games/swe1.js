@@ -32,13 +32,29 @@ module.exports = function(ui, solenoid, lamp) {
         solenoid.fire(side + 'Slingshot');
         this.dispatch('addPoints', 10000);
       },
+
+      bankFull: function() {
+         this.dispatch('addPoints', 500000);
+      },
       states: {
 
       },
       entry: function () {
         //update ui state
         lamp.on('StartButton');
-        console.log('entering swe1');
+        this.RightBank = {
+          Upper: false,
+          Middle: false,
+          Lower: false
+        };
+        this.LeftBank = {
+          Upper: false,
+          Middle: false,
+          Lower: false
+        };
+      },
+      exit: function() {
+
       }
     }
   };

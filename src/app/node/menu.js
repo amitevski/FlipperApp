@@ -10,6 +10,42 @@ module.exports = function(ui, solenoid, lamp) {
     states: {
       inGame: {
 
+        LeftBankUpperDown: function() {
+          lamp.on('LeftStandupsUpper');
+          this.dispatch('enableBank', {side: 'Left', pos: 'Upper'});
+        },
+        LeftBankMiddleDown: function() {
+          lamp.on('LeftStandupsMiddle');
+          this.dispatch('enableBank', {side: 'Left', pos: 'Middle'});
+        },
+        LeftBankLowerDown: function() {
+          // TODO: fix typo lowser in FlipperDriver
+          lamp.on('LeftStandupsLowser');
+          this.dispatch('enableBank', {side: 'Left', pos: 'Lower'});
+        },
+        RightBankUpperDown: function() {
+          lamp.on('RightStandupsUpper');
+          this.dispatch('enableBank', {side: 'Right', pos: 'Upper'});
+        },
+        RightBankMiddleDown: function() {
+          lamp.on('RightStandupsMiddle');
+          this.dispatch('enableBank', {side: 'Right', pos: 'Middle'});
+        },
+        RightBankLowerDown: function() {
+          lamp.on('RightStandupsLower');
+          this.dispatch('enableBank', {side: 'Right', pos: 'Lower'});
+        },
+        enableBank: function(opts) {
+          var side = opts.side,
+            pos = opts.pos;
+          this[side+'Bank'][pos] = true;
+          // if all positions are hit bankFull event is triggered
+          for(var o in this[side+'Bank'])
+            if(!this[side+'Bank'][o]) return;
+          for(var o in this[side+'Bank'])
+            this[side+'Bank'][o] = false;
+          this.dispatch('bankFull');
+        },
         addPoints: function(points) {
           this.points += points;
           ui.setPoints(this.points);
