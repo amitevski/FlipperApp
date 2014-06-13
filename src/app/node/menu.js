@@ -39,9 +39,7 @@ module.exports = function(ui, solenoid, lamp) {
           }
           solenoid.release(side + 'FlipperHold');
         },
-        //start button too sensitive
-        // TODO: implement other option to end game
-        //StartDown: {target: 'Menu'},
+        gameOver: {target: 'Menu'},
         BlinkLamp: function(opts) {
           lamp.on(opts.id);
           setTimeout(function() {
@@ -62,13 +60,18 @@ module.exports = function(ui, solenoid, lamp) {
           this.shooterLaneDown = false;
         },
         TroughBall4Down: function() {
-          if (!this.shooterLaneDown) {
-            solenoid.fire('TroughEject');
+          // hack to prevent accidental switch triggers
+          if (this.shooterLaneDown) return;
+          solenoid.fire('TroughEject');
+          this.ballCount--;
+          if (0 === this.ballCount) {
+            this.dispatch('gameOver');
           }
         },
         states: {
         },
         entry: function () {
+          this.ballCount = 3;
           var that = this;
           solenoid.fire('TroughEject');
           // wait for transition to inGame to finish

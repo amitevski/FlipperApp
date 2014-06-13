@@ -185,6 +185,13 @@ describe('Menu HSM', function() {
         MenuHsm.dispatch('TroughBall4Down');
         solenoidMock.fire.should.have.callCount(2);
       });
+      it('should end game after 3 TroughBalls', function() {
+        MenuHsm.dispatch('TroughBall4Down');
+        MenuHsm.dispatch('TroughBall4Down');
+        expect(MenuHsm.myState.name).to.equal('inGame');
+        MenuHsm.dispatch('TroughBall4Down');
+        expect(MenuHsm.myState.name).to.equal('Menu');
+      });
     });
 
   });
