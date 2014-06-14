@@ -35,6 +35,16 @@ module.exports = function(ui, solenoid, lamp) {
           lamp.on('RightStandupsLower');
           this.dispatch('enableBank', {side: 'Right', pos: 'Lower'});
         },
+        LeftBankLightsOff: function() {
+          lamp.off('LeftStandupsUpper');
+          lamp.off('LeftStandupsMiddle');
+          lamp.off('LeftStandupsLowser');
+        },
+        RightBankLightsOff: function() {
+          lamp.off('RightStandupsUpper');
+          lamp.off('RightStandupsMiddle');
+          lamp.off('RightStandupsLower');
+        },
         enableBank: function(opts) {
           var side = opts.side,
             pos = opts.pos;
@@ -45,10 +55,11 @@ module.exports = function(ui, solenoid, lamp) {
               return;
             }
           }
-
+          // reset bank
           for(var j in this[side+'Bank']) {
             this[side+'Bank'][j] = false;
           }
+          this.dispatch(side + 'BankLightsOff');
           this.dispatch('bankFull');
         },
         addPoints: function(points) {
@@ -125,6 +136,8 @@ module.exports = function(ui, solenoid, lamp) {
         },
         exit: function() {
           this.dispatch('BaseLights', 'off');
+          this.dispatch('LeftBankLightsOff');
+          this.dispatch('RightBankLightsOff');
         }
       },
       Menu: {

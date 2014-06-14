@@ -138,6 +138,15 @@ describe('Menu HSM', function() {
         Swe1Hsm.dispatch('LeftBankLowerDown');
         expect(Swe1Hsm.points).to.equal(500000);
       });
+      it('should turn off lamps after 3 hits', function() {
+        Swe1Hsm.dispatch('LeftBankUpperDown');
+        lampMock.on.should.have.been.calledWith('LeftStandupsUpper');
+        Swe1Hsm.dispatch('LeftBankMiddleDown');
+        lampMock.on.should.have.been.calledWith('LeftStandupsMiddle');
+        Swe1Hsm.dispatch('LeftBankLowerDown');
+        lampMock.on.should.have.been.calledWith('LeftStandupsLowser');
+        lampMock.off.should.have.callCount(3);
+      });
     });
     describe('Right side', function() {
       it('should trigger bank full event if all banks are hit', function() {
