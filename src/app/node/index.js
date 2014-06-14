@@ -80,17 +80,6 @@ FlipperServer.prototype.bindFlipperEvents =
         game.dispatch(value.name + 'Up', value);
       }
   });
-
-/*  flipperDriver.flipperModel.emit('RightActionButton', {name: 'RightActionButton'});
-  setTimeout(function() {
-    flipperDriver.flipperModel.emit('Start', {name: 'Start', state: true});
-    flipperDriver.flipperModel.emit('Start', {name: 'Start', state: false});
-    setTimeout(function() {
-      flipperDriver.flipperModel.emit('RightActionButton', {name: 'RightActionButton', state: true});
-      game.dispatch('LeftSlingshotDown');
-    }, 1000);
-  }, 2*1000);
-*/
 };
 
 FlipperServer.prototype.run =
