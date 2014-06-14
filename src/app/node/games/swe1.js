@@ -41,17 +41,7 @@ module.exports = function(ui, solenoid, lamp) {
       },
       entry: function () {
         //update ui state
-        lamp.on('StartButton');
-        this.RightBank = {
-          Upper: false,
-          Middle: false,
-          Lower: false
-        };
-        this.LeftBank = {
-          Upper: false,
-          Middle: false,
-          Lower: false
-        };
+
       },
       exit: function() {
 

@@ -41,10 +41,14 @@ describe('Menu HSM', function() {
     uiMock = null;
   });
   describe('entry', function() {
-    it('should light StartButton', function() {
+    it('should light StartButton', function(done) {
       Swe1Hsm.run();
       Swe1Hsm.dispatch('swe1');
-      lampMock.on.should.have.been.called;
+      setTimeout(function() {
+        lampMock.on.should.have.been.calledWith('StartButton');
+        done();
+      }, 3);
+
     });
   });
   describe('JetBumperDown', function() {

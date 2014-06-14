@@ -126,6 +126,16 @@ module.exports = function(ui, solenoid, lamp) {
         },
         entry: function () {
           this.ballCount = 3;
+          this.RightBank = {
+            Upper: false,
+            Middle: false,
+            Lower: false
+          };
+          this.LeftBank = {
+            Upper: false,
+            Middle: false,
+            Lower: false
+          };
           var that = this;
           solenoid.fire('TroughEject');
           // wait for transition to inGame to finish
