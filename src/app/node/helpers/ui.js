@@ -45,5 +45,11 @@ UI.prototype.resetGameMessage = function() {
   this.emit('resetGameMessage');
 };
 
+UI.prototype.setTargets = function(targets) {
+  this.emit('setTargets', targets);
+};
+
+
+
 
 module.exports = new UI();

@@ -50,29 +50,57 @@ module.exports = function(ui, solenoid, lamp) {
           RightDropTargetDown: {target: 'RightHit'},
           states: {
             CenterHit: {
+              ShieldHitDown: function() {},
               LeftDropTargetDown: {target: 'LeftCenterHit'},
-              RightDropTargetDown: {target: 'LeftCenterHit'}
+              RightDropTargetDown: {target: 'LeftCenterHit'},
+              entry: function() {
+                ui.setTargets(['left','','right']);
+              }
             },
             LeftHit: {
+              LeftDropTargetDown: function() {},
               RightDropTargetDown: {target: 'RightCenterHit'},
-              ShieldHitDown: {target: 'LeftCenterHit'}
+              ShieldHitDown: {target: 'LeftCenterHit'},
+              entry: function() {
+                ui.setTargets(['','center','right']);
+              }
             },
             RightHit: {
+              RightDropTargetDown: function() {},
               LeftDropTargetDown: {target: 'LeftRightHit'},
-              ShieldHitDown: {target: 'RightCenterHit'}
+              ShieldHitDown: {target: 'RightCenterHit'},
+              entry: function() {
+                ui.setTargets(['left','center','']);
+              }
             },
             LeftRightHit: {
+              entry: function() {
+                ui.setTargets(['','center','']);
+              },
+              LeftDropTargetDown: function() {},
+              RightDropTargetDown: function() {},
               ShieldHitDown: {target: 'swe1'} //finish subgame
             },
             LeftCenterHit: {
+              entry: function() {
+                ui.setTargets(['','','right']);
+              },
+              LeftDropTargetDown: function() {},
+              ShieldHitDown: function() {},
               RightDropTargetDown: {target: 'swe1'} //finish subgame
             },
             RightCenterHit: {
+              entry: function() {
+                ui.setTargets(['left','','']);
+              },
+              RightDropTargetDown: function() {},
+              ShieldHitDown: function() {},
               LeftDropTargetDown: {target: 'swe1'} //finish subgame
             }
           },
 
           entry: function() {
+            ui.setTargets(['left','center','right']);
             ui.setGameMessage('shoot the 3 targets below');
           },
           exit: function() {

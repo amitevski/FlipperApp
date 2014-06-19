@@ -23,7 +23,13 @@ describe('Menu HSM', function() {
 
   beforeEach(function () {
     uiMock = {
-      openMenu: sinon.spy(), startSelectedGame: sinon.spy(), nextGame: sinon.spy(), prevGame: sinon.spy(), setPoints: sinon.spy()
+      openMenu: sinon.spy(),
+      startSelectedGame: sinon.spy(),
+      nextGame: sinon.spy(),
+      prevGame: sinon.spy(),
+      setGameMessage: sinon.spy(),
+      setTargets: sinon.spy(),
+      setPoints: sinon.spy()
     };
     solenoidMock = {
       fire: sinon.spy(), release: sinon.spy()
@@ -160,5 +166,56 @@ describe('Menu HSM', function() {
         expect(Swe1Hsm.points).to.equal(500000);
       });
     });
+  });
+
+  describe('SubGameSimple state', function() {
+    beforeEach(function() {
+      Swe1Hsm.run();
+      Swe1Hsm.dispatch('swe1');
+      // hit ShieldHitDown twice
+      Swe1Hsm.dispatch('ShieldHitDown');
+      Swe1Hsm.dispatch('ShieldHitDown');
+    });
+    describe('entry event', function() {
+      it('should set game message', function() {
+        uiMock.setGameMessage.should.have.been.calledWith('shoot the 3 targets below');
+      });
+      it('should set all Targets', function() {
+        uiMock.setTargets.should.have.been.calledWith(['left','center','right']);
+      });
+    });
+    describe('ShieldHitDown event', function() {
+      it('should set targets if shield is hit', function() {
+        Swe1Hsm.dispatch('ShieldHitDown');
+        uiMock.setTargets.should.have.been.calledWith(['left','','right']);
+      });
+    });
+    describe('LeftDropTargetDown event', function() {
+      it('should set targets if LeftDropTarget is hit', function() {
+        Swe1Hsm.dispatch('LeftDropTargetDown');
+        uiMock.setTargets.should.have.been.calledWith(['','center','right']);
+      });
+    });
+    describe('RightDropTargetDown event', function() {
+      it('should set targets if RightDropTarget is hit', function() {
+        Swe1Hsm.dispatch('RightDropTargetDown');
+        uiMock.setTargets.should.have.been.calledWith(['left','center','']);
+      });
+    });
+
+    describe('CenterHit substate', function() {
+      describe('LeftDropTargetDown event', function() {
+        it('should set targets if LeftDropTarget is hit', function() {
+          expect(Swe1Hsm.myState.name).to.equal('SubGameSimple');
+          Swe1Hsm.dispatch('ShieldHitDown');
+          expect(Swe1Hsm.myState.name).to.equal('CenterHit');
+          Swe1Hsm.dispatch('LeftDropTargetDown');
+          Swe1Hsm.dispatch('LeftDropTargetDown');
+          expect(Swe1Hsm.myState.name).to.equal('LeftCenterHit');
+          uiMock.setTargets.should.have.been.calledWith(['','','right']);
+        });
+      });
+    });
+
   });
 });
