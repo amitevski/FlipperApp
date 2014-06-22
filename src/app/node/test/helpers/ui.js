@@ -3,20 +3,22 @@
  */
 'use strict';
 
-var emitSpy = sinon.spy();
-function EmitterMock() {}
-EmitterMock.prototype.emit = emitSpy;
-var ui = proxyquire(root + 'helpers/ui',
-  {
-    'eventemitter2': {
-      EventEmitter2: EmitterMock
-    }
-  }
-);
 
+var emitSpy,
+  ui;
 
 describe('UI', function() {
   beforeEach(function() {
+    emitSpy = sinon.spy();
+    function EmitterMock() {}
+    EmitterMock.prototype.emit = emitSpy;
+    ui = proxyquire(root + 'helpers/ui',
+      {
+        'eventemitter2': {
+          EventEmitter2: EmitterMock
+        }
+      }
+    );
   });
   it('should only create one instance', function() {
     var a = require(root + 'helpers/ui');

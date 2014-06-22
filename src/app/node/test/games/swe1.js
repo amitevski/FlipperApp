@@ -12,16 +12,18 @@ var uiMock,
   solenoidMock,
   lampMock,
   HSMbase,
-  menu = require(root + 'menu'),
-  swe1 = require(root + '/games/swe1'),
+  menu,
+  swe1,
   _ = require('underscore'),
   Statechart = require('statechart'),
   Swe1Hsm;
 
 
-describe('Menu HSM', function() {
+describe('SWE1 HSM', function() {
 
   beforeEach(function () {
+    menu = require(root +'/menu');
+    swe1 = require(root + '/games/swe1');
     uiMock = {
       openMenu: sinon.spy(),
       startSelectedGame: sinon.spy(),
