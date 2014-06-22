@@ -10,7 +10,7 @@ var uiMock,
   solenoidMock,
   lampMock,
   sandbox,
-  menu = require(root + 'menu'),
+  menu,
   _ = require('underscore'),
   Statechart = require('statechart'),
   MenuHsm;
@@ -19,6 +19,7 @@ var uiMock,
 describe('Menu HSM', function() {
 
   beforeEach(function() {
+    menu = require(root + 'menu');
     sandbox = sinon.sandbox.create();
     uiMock = {
       openMenu: sandbox.spy()

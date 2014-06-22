@@ -2,6 +2,8 @@
  * Created by acomitevski on 30/04/14.
  */
 
+/*jshint camelcase: false */
+
 'use strict';
 
 module.exports = function(grunt) {
@@ -26,6 +28,20 @@ module.exports = function(grunt) {
         src: ['test/spechelper.js', 'test/**/*.js']
       }
     },
+    mocha_istanbul: {
+      coverage: {
+        src: './test', // the folder, not the files,
+        options: {
+          globals: ['expect', 'sinon', 'root', 'proxyquire'],
+          timeout: 3000,
+          ignoreLeaks: false,
+          ui: 'bdd',
+          reporter: 'spec',
+          reportFormats: ['text'],
+          recursive: true
+        }
+      }
+    },
     jshint: {
       options: {
         jshintrc: '.jshintrc',
@@ -41,8 +57,9 @@ module.exports = function(grunt) {
 
   });
 
+  grunt.loadNpmTasks('grunt-mocha-istanbul');
   // Default task(s).
-  grunt.registerTask('test', ['jshint', 'simplemocha']);
+  grunt.registerTask('test', ['jshint', 'mocha_istanbul']);
   grunt.registerTask('default', ['test']);
 
 };
