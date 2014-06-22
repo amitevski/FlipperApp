@@ -9,32 +9,63 @@ module.exports = function(ui, solenoid, lamp) {
 
     states: {
       inGame: {
-        UpperJetBumperDown: function() {
-          solenoid.fire('UpperBumper');
-          this.dispatch('BlinkLamp', {id:'UpperJet', duration:20});
-          this.dispatch('addPoints', 5000);
+        LeftSaucerDown: function() {
+          solenoid.fire('LeftSaucer');
         },
-        MiddleJetBumperDown: function() {
-          solenoid.fire('MiddleBumper');
-          this.dispatch('BlinkLamp', {id:'MiddleJets', duration:20});
-          this.dispatch('addPoints', 5000);
+        RightSaucerDown: function() {
+          solenoid.fire('RightSaucer');
         },
-        LowerJetBumperDown: function() {
-          solenoid.fire('LowerBumper');
-          this.dispatch('BlinkLamp', {id:'LowerJet', duration:20});
-          this.dispatch('addPoints', 5000);
+        LeftBankUpperDown: function() {
+          lamp.on('LeftStandupsUpper');
+          this.dispatch('enableBank', {side: 'Left', pos: 'Upper'});
         },
-        LeftSlingshotDown: function() {
-          this.dispatch('Slingshot', 'Left');
+        LeftBankMiddleDown: function() {
+          lamp.on('LeftStandupsMiddle');
+          this.dispatch('enableBank', {side: 'Left', pos: 'Middle'});
         },
-        RightSlingshotDown: function() {
-          this.dispatch('Slingshot', 'Right');
+        LeftBankLowerDown: function() {
+          // TODO: fix typo lowser in FlipperDriver
+          lamp.on('LeftStandupsLowser');
+          this.dispatch('enableBank', {side: 'Left', pos: 'Lower'});
         },
-        Slingshot: function(side) {
-          this.dispatch('BlinkLamp', {id: side + 'SlingGIUpper', duration:20});
-          this.dispatch('BlinkLamp', {id: side + 'SlingGILower', duration:20});
-          solenoid.fire(side + 'Slingshot');
-          this.dispatch('addPoints', 10000);
+        RightBankUpperDown: function() {
+          lamp.on('RightStandupsUpper');
+          this.dispatch('enableBank', {side: 'Right', pos: 'Upper'});
+        },
+        RightBankMiddleDown: function() {
+          lamp.on('RightStandupsMiddle');
+          this.dispatch('enableBank', {side: 'Right', pos: 'Middle'});
+        },
+        RightBankLowerDown: function() {
+          lamp.on('RightStandupsLower');
+          this.dispatch('enableBank', {side: 'Right', pos: 'Lower'});
+        },
+        LeftBankLightsOff: function() {
+          lamp.off('LeftStandupsUpper');
+          lamp.off('LeftStandupsMiddle');
+          lamp.off('LeftStandupsLowser');
+        },
+        RightBankLightsOff: function() {
+          lamp.off('RightStandupsUpper');
+          lamp.off('RightStandupsMiddle');
+          lamp.off('RightStandupsLower');
+        },
+        enableBank: function(opts) {
+          var side = opts.side,
+            pos = opts.pos;
+          this[side+'Bank'][pos] = true;
+          // if all positions are hit bankFull event is triggered
+          for(var o in this[side+'Bank']) {
+            if (!this[side+'Bank'][o]) {
+              return;
+            }
+          }
+          // reset bank
+          for(var j in this[side+'Bank']) {
+            this[side+'Bank'][j] = false;
+          }
+          this.dispatch(side + 'BankLightsOff');
+          this.dispatch('bankFull');
         },
         addPoints: function(points) {
           this.points += points;
@@ -65,7 +96,7 @@ module.exports = function(ui, solenoid, lamp) {
           }
           solenoid.release(side + 'FlipperHold');
         },
-        StartDown: {target: 'Menu'},
+        gameOver: {target: 'Menu'},
         BlinkLamp: function(opts) {
           lamp.on(opts.id);
           setTimeout(function() {
@@ -79,10 +110,39 @@ module.exports = function(ui, solenoid, lamp) {
           lamp[mode]('BottomArchLeftRight');
           lamp[mode]('StartButton');
         },
+        ShooterLaneDown: function() {
+          this.shooterLaneDown = true;
+        },
+        ShooterLaneUp: function() {
+          this.shooterLaneDown = false;
+        },
+        TroughBall4Down: function() {
+          // hack to prevent accidental switch triggers
+          if (this.shooterLaneDown) {
+            return;
+          }
+          solenoid.fire('TroughEject');
+          this.ballCount--;
+          if (0 === this.ballCount) {
+            this.dispatch('gameOver');
+          }
+        },
         states: {
         },
         entry: function () {
+          this.ballCount = 3;
+          this.RightBank = {
+            Upper: false,
+            Middle: false,
+            Lower: false
+          };
+          this.LeftBank = {
+            Upper: false,
+            Middle: false,
+            Lower: false
+          };
           var that = this;
+          solenoid.fire('TroughEject');
           // wait for transition to inGame to finish
           // otherwise BaseLights is not defined
           setTimeout(function() {
@@ -91,6 +151,8 @@ module.exports = function(ui, solenoid, lamp) {
         },
         exit: function() {
           this.dispatch('BaseLights', 'off');
+          this.dispatch('LeftBankLightsOff');
+          this.dispatch('RightBankLightsOff');
         }
       },
       Menu: {
@@ -98,10 +160,10 @@ module.exports = function(ui, solenoid, lamp) {
         StartDown: function () {
           ui.startSelectedGame();
         },
-        RightActionButton: function() {
+        RightActionButtonDown: function() {
           ui.nextGame();
         },
-        LeftActionButton: function() {
+        LeftActionButtonDown: function() {
           ui.prevGame();
         },
         states: {},

@@ -7,13 +7,10 @@
 angular.module('fuMenu')
   .controller('MenuController', function ($scope, $state, uiInterface, serverInterface) {
 
-
-
     $scope.startSelectedGame = function() {
       $state.go('game', {gameName: $scope.selectedGame});
       serverInterface.HSM.dispatch($scope.selectedGame);
     };
-
 
     $scope.games = serverInterface.games;
 
@@ -52,10 +49,28 @@ angular.module('fuMenu')
     $scope.select = function(game) {
       game.active = true;
       $scope.selectedGame = game.title;
+      $scope.$digest();
     };
 
     uiInterface.on('startSelectedGame', angular.bind($scope, $scope.startSelectedGame));
     uiInterface.on('nextGame', angular.bind($scope, $scope.next));
     uiInterface.on('prevGame', angular.bind($scope, $scope.prev));
+
+
+
+    /**
+     * methods for manually testing ui
+     * testing methods
+     */
+
+    $scope.startGame = function(game) {
+      $state.go('game', {gameName: game});
+      serverInterface.HSM.dispatch(game);
+    };
+
+
+    /**
+     * end testing methods
+     */
 
   });

@@ -37,5 +37,19 @@ UI.prototype.prevGame = function() {
   this.emit('prevGame');
 };
 
+UI.prototype.setGameMessage = function(message) {
+  this.emit('setGameMessage', message);
+};
+
+UI.prototype.resetGameMessage = function() {
+  this.emit('setGameMessage', '');
+};
+
+UI.prototype.setTargets = function(targets) {
+  this.emit('setTargets', targets);
+};
+
+
+
 
 module.exports = new UI();

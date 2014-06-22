@@ -9,6 +9,7 @@
 var uiMock,
   solenoidMock,
   lampMock,
+  sandbox,
   menu = require(root + 'menu'),
   _ = require('underscore'),
   Statechart = require('statechart'),
@@ -18,27 +19,27 @@ var uiMock,
 describe('Menu HSM', function() {
 
   beforeEach(function() {
+    sandbox = sinon.sandbox.create();
     uiMock = {
-      openMenu: sinon.spy()
-      ,startSelectedGame: sinon.spy()
-      ,nextGame: sinon.spy()
-      ,prevGame: sinon.spy()
-      ,setPoints: sinon.spy()
+      openMenu: sandbox.spy()
+      ,startSelectedGame: sandbox.spy()
+      ,nextGame: sandbox.spy()
+      ,prevGame: sandbox.spy()
+      ,setPoints: sandbox.spy()
     };
     solenoidMock = {
-      fire: sinon.spy()
-      ,release: sinon.spy()
+      fire: sandbox.spy()
+      ,release: sandbox.spy()
     };
     lampMock = {
-      on: sinon.spy()
-      ,off: sinon.spy()
-      ,toggle: sinon.spy()
+      on: sandbox.spy()
+      ,off: sandbox.spy()
+      ,toggle: sandbox.spy()
     };
     MenuHsm = _.extend(menu(uiMock, solenoidMock, lampMock), Statechart);
   });
   afterEach(function() {
-    MenuHsm = null;
-    uiMock = null;
+    sandbox.restore();
   });
 
   describe('entry', function() {
@@ -59,7 +60,7 @@ describe('Menu HSM', function() {
   describe('RightActionButton', function() {
     it('should select next game', function() {
       MenuHsm.run();
-      MenuHsm.dispatch('RightActionButton');
+      MenuHsm.dispatch('RightActionButtonDown');
       uiMock.nextGame.should.have.been.calledOnce;
     });
   });
@@ -67,7 +68,7 @@ describe('Menu HSM', function() {
   describe('LeftActionButton', function() {
     it('should select previous game', function() {
       MenuHsm.run();
-      MenuHsm.dispatch('LeftActionButton');
+      MenuHsm.dispatch('LeftActionButtonDown');
       uiMock.prevGame.should.have.been.calledOnce;
     });
   });
@@ -93,7 +94,7 @@ describe('Menu HSM', function() {
     });
     describe('exit', function() {
       it('should turn off base ambient lights', function() {
-        MenuHsm.dispatch('StartDown');
+        MenuHsm.dispatch('exit');
         lampMock.off.should.have.been.calledWith('BottomArchLeftLeft');
         lampMock.off.should.have.been.calledWith('BottomArchRightRight');
         lampMock.off.should.have.been.calledWith('BottomArchRightLeft');
@@ -162,74 +163,46 @@ describe('Menu HSM', function() {
         solenoidMock.release.should.have.been.calledWith('RightFlipperHold');
       });
     });
-
-    describe('SlingshotDown', function() {
-      ['Left', 'Right'].map(function(side) {
-        describe(side + 'SlingshotDown', function() {
-          beforeEach(function() {
-            MenuHsm.dispatch(side + 'SlingshotDown');
-          });
-          it('should blink '+ side +' sling GI lamps', function(done) {
-            lampMock.on.should.have.been.calledWith(side + 'SlingGIUpper');
-            lampMock.on.should.have.been.calledWith(side + 'SlingGILower');
-            setTimeout(function() {
-              lampMock.off.should.have.been.calledWith(side + 'SlingGIUpper');
-              lampMock.off.should.have.been.calledWith(side + 'SlingGILower');
-              done();
-            }, 25);
-          });
-
-          it('should fire '+ side +' slingshot solenoid', function() {
-            solenoidMock.fire.should.have.been.calledWith(side + 'Slingshot');
-          });
-
-          it('should add 10.000 points', function() {
-            expect(MenuHsm.points).to.equal(10000);
-          });
-        });
+    describe('TroughBall4Down', function() {
+      it('should not fire solenoid if shooter lane is down', function() {
+        MenuHsm.dispatch('ShooterLaneDown');
+        MenuHsm.dispatch('TroughBall4Down');
+        MenuHsm.dispatch('TroughBall4Down');
+        // first call is on entry inGame
+        solenoidMock.fire.should.have.callCount(1);
       });
-
-      describe('JetBumperDown', function() {
-        ['Upper', 'Lower'].map(function(pos) {
-          describe(pos + 'JetBumperDown', function() {
-            beforeEach(function() {
-              MenuHsm.points = 0;
-              MenuHsm.dispatch(pos + 'JetBumperDown');
-            });
-            it('should blink '+ pos +' Jet Lamp', function(done) {
-              lampMock.on.should.have.been.calledWith(pos +'Jet');
-              setTimeout(function() {
-                lampMock.off.should.have.been.calledWith(pos + 'Jet');
-                done();
-              }, 25);
-            });
-            it('should fire '+ pos +' bumper', function() {
-              solenoidMock.fire.should.have.been.calledWith(pos + 'Bumper');
-            });
-            it('should add 5.000 points', function() {
-              expect(MenuHsm.points).to.equal(5000);
-            });
-          });
-        });
-        describe('MiddleJetBumperDown', function() {
-          beforeEach(function() {
-            MenuHsm.dispatch('MiddleJetBumperDown');
-          });
-          it('should blink MiddleJet Lamp', function(done) {
-            lampMock.on.should.have.been.calledWith('MiddleJets');
-            setTimeout(function() {
-              lampMock.off.should.have.been.calledWith('MiddleJets');
-              done();
-            }, 25);
-          });
-          it('should fire Middle bumper', function() {
-            solenoidMock.fire.should.have.been.calledWith('MiddleBumper');
-          });
-          it('should add 5.000 points', function() {
-            expect(MenuHsm.points).to.equal(5000);
-          });
-        });
+      it('should re-enable TroughEject if shooter lane is up again', function() {
+        MenuHsm.dispatch('ShooterLaneDown');
+        MenuHsm.dispatch('TroughBall4Down');
+        MenuHsm.dispatch('TroughBall4Down');
+        // first call is on entry inGame
+        solenoidMock.fire.should.have.callCount(1);
+        MenuHsm.dispatch('ShooterLaneUp');
+        MenuHsm.dispatch('TroughBall4Down');
+        solenoidMock.fire.should.have.callCount(2);
+      });
+      it('should fire solenoid if shooter lane is up', function() {
+        MenuHsm.dispatch('TroughBall4Down');
+        solenoidMock.fire.should.have.callCount(2);
+      });
+      it('should end game after 3 TroughBalls', function() {
+        MenuHsm.dispatch('TroughBall4Down');
+        MenuHsm.dispatch('TroughBall4Down');
+        expect(MenuHsm.myState.name).to.equal('inGame');
+        MenuHsm.dispatch('TroughBall4Down');
+        expect(MenuHsm.myState.name).to.equal('Menu');
+      });
+    });
+    describe('Saucers', function() {
+      it('should fire left saucer solenoid when left saucer is hit', function(){
+        MenuHsm.dispatch('LeftSaucerDown');
+        solenoidMock.fire.should.have.been.calledWith('LeftSaucer');
+      });
+      it('should fire right saucer solenoid when rght saucer is hit', function(){
+        MenuHsm.dispatch('RightSaucerDown');
+        solenoidMock.fire.should.have.been.calledWith('RightSaucer');
       });
     });
   });
+
 });
