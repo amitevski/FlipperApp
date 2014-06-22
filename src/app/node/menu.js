@@ -9,7 +9,12 @@ module.exports = function(ui, solenoid, lamp) {
 
     states: {
       inGame: {
-
+        LeftSaucerDown: function() {
+          solenoid.fire('LeftSaucer');
+        },
+        RightSaucerDown: function() {
+          solenoid.fire('RightSaucer');
+        },
         LeftBankUpperDown: function() {
           lamp.on('LeftStandupsUpper');
           this.dispatch('enableBank', {side: 'Left', pos: 'Upper'});

@@ -193,6 +193,16 @@ describe('Menu HSM', function() {
         expect(MenuHsm.myState.name).to.equal('Menu');
       });
     });
-
+    describe('Saucers', function() {
+      it('should fire left saucer solenoid when left saucer is hit', function(){
+        MenuHsm.dispatch('LeftSaucerDown');
+        solenoidMock.fire.should.have.been.calledWith('LeftSaucer');
+      });
+      it('should fire right saucer solenoid when rght saucer is hit', function(){
+        MenuHsm.dispatch('RightSaucerDown');
+        solenoidMock.fire.should.have.been.calledWith('RightSaucer');
+      });
+    });
   });
+
 });
