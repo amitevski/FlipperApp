@@ -1,6 +1,7 @@
 # Define your own games for Pinball 2000 plattform
 
 [![Build Status](https://drone.io/github.com/amitevski/FlipperApp/status.png)](https://drone.io/github.com/amitevski/FlipperApp/latest)
+[![Coverage Status](https://img.shields.io/coveralls/amitevski/FlipperApp.svg)](https://coveralls.io/r/amitevski/FlipperApp)
 
 ## Limitations
 

@@ -40,6 +40,24 @@ module.exports = function(grunt) {
           reportFormats: ['text'],
           recursive: true
         }
+      },
+      coveralls: {
+        src: 'test', // the folder, not the files
+        options: {
+          globals: ['expect', 'sinon', 'root', 'proxyquire'],
+          timeout: 3000,
+          ignoreLeaks: false,
+          ui: 'bdd',
+          reporter: 'spec',
+          recursive: true,
+          coverage:true,
+          check: {
+            lines: 75,
+            statements: 75
+          },
+          root: './', // define where the cover task should consider the root of libraries that are covered by tests
+          reportFormats: ['cobertura','lcovonly']
+        }
       }
     },
     jshint: {
@@ -57,9 +75,17 @@ module.exports = function(grunt) {
 
   });
 
+  grunt.event.on('coverage', function(lcov, done){
+    require('coveralls').handleInput(lcov, function(err){
+      if (err) {
+        return done(err);
+      }
+      done();
+    });
+  });
   grunt.loadNpmTasks('grunt-mocha-istanbul');
   // Default task(s).
-  grunt.registerTask('test', ['jshint', 'mocha_istanbul']);
+  grunt.registerTask('test', ['jshint', 'mocha_istanbul:coveralls']);
   grunt.registerTask('default', ['test']);
 
 };
