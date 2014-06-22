@@ -104,6 +104,7 @@ module.exports = function(ui, solenoid, lamp) {
             ui.setGameMessage('shoot the 3 targets below');
           },
           exit: function() {
+            ui.setTargets(['','','']);
             this.dispatch('addPoints', 10000000);
             ui.resetGameMessage();
           }

@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-md-4">{{game}}</div>
+  <div class="col-md-4" ng-click="dispatch('ShieldHitDown')">{{game}}</div>
   <div class="col-md-4 text-center"></div>
   <div class="col-md-4 text-right">{{points}} Points</div>
 </div>
@@ -10,7 +10,16 @@
 
 </div>
 <div class="row fa-targets">
-  <div class="col-md-4 fa-target-left"></div>
-  <div class="col-md-4 fa-target-center text-center"></div>
-  <div class="col-md-4 fa-target-right text-right"></div>
+  <div class="col-md-4 fa-target-left"
+       ng-click="dispatch('LeftDropTargetDown')">
+    {{targets[0]}}
+  </div>
+  <div class="col-md-4 fa-target-center text-center"
+       ng-click="dispatch('ShieldHitDown')">
+    {{targets[1]}}
+  </div>
+  <div class="col-md-4 fa-target-right text-right"
+       ng-click="dispatch('RightDropTargetDown')">
+    {{targets[2]}}
+  </div>
 </div>

@@ -42,7 +42,7 @@ UI.prototype.setGameMessage = function(message) {
 };
 
 UI.prototype.resetGameMessage = function() {
-  this.emit('resetGameMessage');
+  this.emit('setGameMessage', '');
 };
 
 UI.prototype.setTargets = function(targets) {

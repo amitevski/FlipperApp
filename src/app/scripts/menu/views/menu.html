@@ -2,7 +2,7 @@
 <div>
   <div style="height: 305px">
     <carousel noTransition="true" >
-      <slide ng-repeat="slide in games" active="slide.active" ng-click="startSelectedGame()">
+      <slide ng-repeat="slide in games" active="slide.active" ng-click="startGame(slide.title)">
         <svg height="304" width="600">
           <text x="50" y="170" fill="white" style="font-size: 60px;">{{slide.title}}</text>
         </svg>
