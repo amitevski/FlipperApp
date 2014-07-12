@@ -52,14 +52,14 @@ module.exports = function(ui, solenoid, lamp) {
             CenterHit: {
               ShieldHitDown: function() {},
               LeftDropTargetDown: {target: 'LeftCenterHit'},
-              RightDropTargetDown: {target: 'LeftCenterHit'},
+              RightDropTargetDown: {target: 'RightCenterHit'},
               entry: function() {
                 ui.setTargets(['left','','right']);
               }
             },
             LeftHit: {
               LeftDropTargetDown: function() {},
-              RightDropTargetDown: {target: 'RightCenterHit'},
+              RightDropTargetDown: {target: 'LeftRightHit'},
               ShieldHitDown: {target: 'LeftCenterHit'},
               entry: function() {
                 ui.setTargets(['','center','right']);
