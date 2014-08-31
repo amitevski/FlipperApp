@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "statechart": "https://github.com/amitevski/statechart/archive/0.1.2.tar.gz",
+    "statechart": "amitevski/statechart",
     "FlipperDriver": "amitevski/FlipperDriver",
     "underscore": "^1.6.0",
     "proxyquire": "^0.6.0",
