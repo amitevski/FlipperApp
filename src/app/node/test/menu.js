@@ -206,4 +206,26 @@ describe('Menu HSM', function() {
     });
   });
 
+  describe('x2bonus pushdown state', function() {
+    beforeEach(function() {
+      MenuHsm.states.Menu.ingame = {target: 'inGame'};
+      MenuHsm.run();
+      MenuHsm.dispatch('ingame');
+      expect(MenuHsm.points).to.equal(0);
+    });
+    it('should add double the points', function() {
+      MenuHsm.pushState('x2bonus');
+      MenuHsm.dispatch('addPoints', 1000);
+      expect(MenuHsm.points).to.equal(2000);
+    });
+    it('should add regular points when x2bonus pushdown state is removed', function() {
+      MenuHsm.pushState('x2bonus');
+      MenuHsm.dispatch('addPoints', 1000);
+      expect(MenuHsm.points).to.equal(2000);
+      MenuHsm.popState();
+      MenuHsm.dispatch('addPoints', 1000);
+      expect(MenuHsm.points).to.equal(3000);
+    });
+  });
+
 });

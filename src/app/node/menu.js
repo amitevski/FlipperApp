@@ -1,11 +1,34 @@
 'use strict';
 
 module.exports = function(ui, solenoid, lamp) {
+
+  var addPoints = function(bonus, points) {
+    this.points += points * bonus;
+    ui.setPoints(this.points);
+  };
   return {
 
     points: 0,
 
     initialState: 'Menu',
+
+    pushStates: {
+      x2bonus: {
+        addPoints: function(points) {
+          addPoints.call(this, 2, points);
+        }
+      },
+      x3bonus: {
+        addPoints: function(points) {
+          addPoints.call(this, 3, points);
+        }
+      },
+      x4bonus: {
+        addPoints: function(points) {
+          addPoints.call(this, 3, points);
+        }
+      }
+    },
 
     states: {
       inGame: {
