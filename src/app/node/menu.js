@@ -25,7 +25,12 @@ module.exports = function(ui, solenoid, lamp) {
       },
       x4bonus: {
         addPoints: function(points) {
-          addPoints.call(this, 3, points);
+          addPoints.call(this, 4, points);
+        }
+      },
+      x5bonus: {
+        addPoints: function(points) {
+          addPoints.call(this, 5, points);
         }
       }
     },

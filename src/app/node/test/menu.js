@@ -206,26 +206,29 @@ describe('Menu HSM', function() {
     });
   });
 
-  describe('x2bonus pushdown state', function() {
-    beforeEach(function() {
+  describe('bonus pushdown states', function() {
+    var currentBonusState, expectedPoints;
+    beforeEach(function () {
       MenuHsm.states.Menu.ingame = {target: 'inGame'};
       MenuHsm.run();
       MenuHsm.dispatch('ingame');
       expect(MenuHsm.points).to.equal(0);
     });
-    it('should add double the points', function() {
-      MenuHsm.pushState('x2bonus');
-      MenuHsm.dispatch('addPoints', 1000);
-      expect(MenuHsm.points).to.equal(2000);
-    });
-    it('should add regular points when x2bonus pushdown state is removed', function() {
-      MenuHsm.pushState('x2bonus');
-      MenuHsm.dispatch('addPoints', 1000);
-      expect(MenuHsm.points).to.equal(2000);
-      MenuHsm.popState();
-      MenuHsm.dispatch('addPoints', 1000);
-      expect(MenuHsm.points).to.equal(3000);
+    [2, 3, 4, 5].map(function (i) {
+      currentBonusState = 'x' + i + 'bonus';
+      expectedPoints = i * 1000;
+
+      it('should add x' + i + ' points in ' + currentBonusState + ' pushdown state', function () {
+        MenuHsm.pushState(currentBonusState);
+        MenuHsm.dispatch('addPoints', 1000);
+        expect(MenuHsm.points).to.equal(expectedPoints);
+      });
+      it('should add regular points when x' + i + 'bonus pushdown state is removed', function () {
+        MenuHsm.pushState(currentBonusState);
+        MenuHsm.popState();
+        MenuHsm.dispatch('addPoints', 1000);
+        expect(MenuHsm.points).to.equal(1000);
+      });
     });
   });
-
 });
