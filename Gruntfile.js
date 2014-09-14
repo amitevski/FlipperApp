@@ -12,7 +12,7 @@ module.exports = function(grunt) {
 	      version: '0.8.4',
         build_dir: './dist',
         // specifiy what to build
-        mac: false,
+        mac: true,
         win: false,
         linux32: true,
         linux64: true

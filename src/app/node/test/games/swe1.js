@@ -30,6 +30,7 @@ describe('SWE1 HSM', function() {
       nextGame: sinon.spy(),
       prevGame: sinon.spy(),
       setGameMessage: sinon.spy(),
+      resetGameMessage: sinon.spy(),
       setTargets: sinon.spy(),
       setPoints: sinon.spy()
     };
@@ -210,10 +211,10 @@ describe('SWE1 HSM', function() {
         it('should set targets if LeftDropTarget is hit', function() {
           expect(Swe1Hsm.myState.name).to.equal('SubGameSimple');
           Swe1Hsm.dispatch('ShieldHitDown');
-          expect(Swe1Hsm.myState.name).to.equal('CenterHit');
+          expect(Swe1Hsm.pushDownStack[Swe1Hsm.pushDownStack.length -1]).to.eql(Swe1Hsm.pushStates.CenterHit);
           Swe1Hsm.dispatch('LeftDropTargetDown');
           Swe1Hsm.dispatch('LeftDropTargetDown');
-          expect(Swe1Hsm.myState.name).to.equal('LeftCenterHit');
+          expect(Swe1Hsm.pushDownStack[Swe1Hsm.pushDownStack.length -1]).to.eql(Swe1Hsm.pushStates.LeftCenterHit);
           uiMock.setTargets.should.have.been.calledWith(['','','right']);
         });
       });

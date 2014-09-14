@@ -225,7 +225,7 @@ describe('Menu HSM', function() {
       });
       it('should add regular points when x' + i + 'bonus pushdown state is removed', function () {
         MenuHsm.pushState(currentBonusState);
-        MenuHsm.popState();
+        MenuHsm.popState(currentBonusState);
         MenuHsm.dispatch('addPoints', 1000);
         expect(MenuHsm.points).to.equal(1000);
       });

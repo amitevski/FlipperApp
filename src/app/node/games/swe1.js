@@ -36,75 +36,20 @@ module.exports = function(ui, solenoid, lamp) {
       bankFull: function() {
          this.dispatch('addPoints', 500000);
       },
-      ShieldHitDown: {target: 'ShieldHitDown1'},
+      shieldHitOnce: function() {
+        ui.setGameMessage('hit shield again to start simple game');
+      },
+      shieldHitTwice: {target: 'SubGameSimple'},
       states: {
-        ShieldHitDown1: {
-          ShieldHitDown: {target: 'SubGameSimple'},
-          entry: function() {
-            ui.setGameMessage('hit shield again to start simple game');
-          }
-        },
         SubGameSimple: {
-          ShieldHitDown: {target: 'CenterHit'},
-          LeftDropTargetDown: {target: 'LeftHit'},
-          RightDropTargetDown: {target: 'RightHit'},
-          states: {
-            CenterHit: {
-              ShieldHitDown: function() {},
-              LeftDropTargetDown: {target: 'LeftCenterHit'},
-              RightDropTargetDown: {target: 'RightCenterHit'},
-              entry: function() {
-                ui.setTargets(['left','','right']);
-              }
-            },
-            LeftHit: {
-              LeftDropTargetDown: function() {},
-              RightDropTargetDown: {target: 'LeftRightHit'},
-              ShieldHitDown: {target: 'LeftCenterHit'},
-              entry: function() {
-                ui.setTargets(['','center','right']);
-              }
-            },
-            RightHit: {
-              RightDropTargetDown: function() {},
-              LeftDropTargetDown: {target: 'LeftRightHit'},
-              ShieldHitDown: {target: 'RightCenterHit'},
-              entry: function() {
-                ui.setTargets(['left','center','']);
-              }
-            },
-            LeftRightHit: {
-              entry: function() {
-                ui.setTargets(['','center','']);
-              },
-              LeftDropTargetDown: function() {},
-              RightDropTargetDown: function() {},
-              ShieldHitDown: {target: 'swe1'} //finish subgame
-            },
-            LeftCenterHit: {
-              entry: function() {
-                ui.setTargets(['','','right']);
-              },
-              LeftDropTargetDown: function() {},
-              ShieldHitDown: function() {},
-              RightDropTargetDown: {target: 'swe1'} //finish subgame
-            },
-            RightCenterHit: {
-              entry: function() {
-                ui.setTargets(['left','','']);
-              },
-              RightDropTargetDown: function() {},
-              ShieldHitDown: function() {},
-              LeftDropTargetDown: {target: 'swe1'} //finish subgame
-            }
+          topBankFull: {
+            target: 'swe1'
           },
 
           entry: function() {
-            ui.setTargets(['left','center','right']);
             ui.setGameMessage('shoot the 3 targets below');
           },
           exit: function() {
-            ui.setTargets(['','','']);
             this.dispatch('addPoints', 10000000);
             ui.resetGameMessage();
           }

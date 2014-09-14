@@ -32,11 +32,126 @@ module.exports = function(ui, solenoid, lamp) {
         addPoints: function(points) {
           addPoints.call(this, 5, points);
         }
+      },
+      ShieldHitDown1: {
+        ShieldHitDown: function() {
+          ui.resetGameMessage();
+          this.dispatch('shieldHitTwice');
+          this.popState('ShieldHitDown1');
+          this.pushState('topBankGame');
+        },
+        entry: function() {
+          this.dispatch('shieldHitOnce');
+        },
+        exit: function() {}
+      },
+      /*** start top bank game  ***/
+      // this game emits an event when all 3
+      // shield, left-right drop target are hit
+      topBankGame: {
+        ShieldHitDown: function() {
+          this.popState('topBankGame');
+          this.pushState('CenterHit');
+        },
+        LeftDropTargetDown: function() {
+          this.popState('topBankGame');
+          this.pushState('LeftHit');
+        },
+        RightDropTargetDown: function() {
+          this.popState('topBankGame');
+          this.pushState('RightHit');
+        },
+        entry: function() {
+          ui.setTargets(['left','center','right']);
+        }
+      },
+      CenterHit: {
+        ShieldHitDown: function() {},
+        LeftDropTargetDown: function() {
+          this.popState('CenterHit');
+          this.pushState('LeftCenterHit');
+        },
+        RightDropTargetDown: function() {
+          this.popState('CenterHit');
+          this.pushState('RightCenterHit');
+        },
+        entry: function() {
+          ui.setTargets(['left','','right']);
+        }
+      },
+      LeftHit: {
+        ShieldHitDown: function() {
+          this.popState('LeftHit');
+          this.pushState('LeftCenterHit');
+        },
+        LeftDropTargetDown: function() {},
+        RightDropTargetDown: function() {
+          this.popState('LeftHit');
+          this.pushState('LeftRightHit');
+        },
+        entry: function() {
+          ui.setTargets(['','center','right']);
+        }
+      },
+      RightHit: {
+        ShieldHitDown: function() {
+          this.popState('RightHit');
+          this.pushState('RightCenterHit');
+        },
+        LeftDropTargetDown: function() {
+          this.popState('RightHit');
+          this.pushState('LeftRightHit');
+        },
+        RightDropTargetDown: function() {},
+        entry: function() {
+          ui.setTargets(['left','center','']);
+        }
+      },
+      LeftRightHit: {
+        entry: function() {
+          ui.setTargets(['','center','']);
+        },
+        LeftDropTargetDown: function() {},
+        RightDropTargetDown: function() {},
+        ShieldHitDown: function() {
+          this.popState('LeftRightHit');
+          ui.setTargets(['','','']);
+          this.dispatch('topBankFull');
+        }
+      },
+      LeftCenterHit: {
+        entry: function() {
+          ui.setTargets(['','','right']);
+        },
+        LeftDropTargetDown: function() {},
+        ShieldHitDown: function() {},
+        RightDropTargetDown: function() {
+          this.popState('LeftCenterHit');
+          ui.setTargets(['','','']);
+          this.dispatch('topBankFull');
+        }
+      },
+      RightCenterHit: {
+        entry: function() {
+          ui.setTargets(['left','','']);
+        },
+        RightDropTargetDown: function() {},
+        ShieldHitDown: function() {},
+        LeftDropTargetDown: function() {
+          this.popState('RightCenterHit');
+          ui.setTargets(['','','']);
+          this.dispatch('topBankFull');
+        }
       }
+      /*** end start top bank game  ***/
     },
 
     states: {
       inGame: {
+
+        ShieldHitDown: function() {
+          this.pushState('ShieldHitDown1');
+        },
         LeftSaucerDown: function() {
           solenoid.fire('LeftSaucer');
         },
