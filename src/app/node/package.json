@@ -10,7 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "statechart": "amitevski/statechart",
-    "FlipperDriver": "amitevski/FlipperDriver#node011",
+    "FlipperDriver": "amitevski/FlipperDriver",
     "underscore": "^1.6.0",
     "proxyquire": "^0.6.0",
     "eventemitter2": "^0.4.13"

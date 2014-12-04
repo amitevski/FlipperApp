@@ -9,12 +9,12 @@ module.exports = function(grunt) {
 
     nodewebkit: {
       options: {
-	      version: '0.8.4',
+	      version: '0.11.2',
         build_dir: './dist',
         // specifiy what to build
-        mac: true,
+        mac: false,
         win: false,
-        linux32: true,
+        linux32: false,
         linux64: true
       },
       src: ['src/app/**/*']
