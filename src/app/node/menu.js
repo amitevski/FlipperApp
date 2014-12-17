@@ -259,16 +259,54 @@ module.exports = function(ui, solenoid, lamp) {
         ShooterLaneUp: function() {
           this.shooterLaneDown = false;
         },
+        TroughBall1Down: function() {
+          this.dispatch('TroughBall', 1);
+        },
+        TroughBall2Down: function() {
+          this.dispatch('TroughBall', 2);
+        },
+        TroughBall3Down: function() {
+          this.dispatch('TroughBall', 3);
+        },
         TroughBall4Down: function() {
+          this.dispatch('TroughBall', 4);
+        },
+        TroughBall: function(num) {
           // hack to prevent accidental switch triggers
+          if (!this.ThroughBalls) {
+            this.ThroughBalls = {};
+          }
+          if (this.throughBalltimer) {
+            clearTimeout(this.throughBallTimer);
+          }
+          this.ThroughBalls[num] = true;
+          if (Object.keys(this.ThroughBalls).length < 2) {
+            var that = this;
+            this.troughBallTimer = setTimeout(function() {
+              that.ThroughBalls = {};
+            }, 100);
+            return;
+          }
+          this.ballCount--;
+          this.ThroughBalls = {};
+          if (0 === this.ballCount) {
+            this.dispatch('gameOver');
+            return;
+          }
+          this.dispatch('TroughEject');
+        },
+        TroughEject: function() {
           if (this.shooterLaneDown) {
             return;
           }
+          console.log('eject');
           solenoid.fire('TroughEject');
-          this.ballCount--;
-          if (0 === this.ballCount) {
-            this.dispatch('gameOver');
-          }
+          var that = this;
+          setTimeout(function() {
+            if (!that.shooterLaneDown) {
+              that.dispatch('TroughEject');
+            }
+          }, 100);
         },
         states: {
         },
@@ -285,12 +323,16 @@ module.exports = function(ui, solenoid, lamp) {
             Lower: false
           };
           var that = this;
-          solenoid.fire('TroughEject');
+
+
           // wait for transition to inGame to finish
           // otherwise BaseLights is not defined
           setTimeout(function() {
+            if (!this.shooterLaneDown) {
+              that.dispatch('TroughEject');
+            }
             that.dispatch('BaseLights', 'on');
-          }, 0);
+          }, 20);
         },
         exit: function() {
           this.dispatch('BaseLights', 'off');
@@ -308,6 +350,12 @@ module.exports = function(ui, solenoid, lamp) {
         },
         LeftActionButtonDown: function() {
           ui.prevGame();
+        },
+        ShooterLaneDown: function() {
+          this.shooterLaneDown = true;
+        },
+        ShooterLaneUp: function() {
+          this.shooterLaneDown = false;
         },
         states: {},
         entry: function () {
