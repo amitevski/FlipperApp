@@ -272,41 +272,32 @@ module.exports = function(ui, solenoid, lamp) {
           this.dispatch('TroughBall', 4);
         },
         TroughBall: function(num) {
-          // hack to prevent accidental switch triggers
-          if (!this.ThroughBalls) {
-            this.ThroughBalls = {};
-          }
-          if (this.throughBalltimer) {
-            clearTimeout(this.throughBallTimer);
-          }
-          this.ThroughBalls[num] = true;
-          if (Object.keys(this.ThroughBalls).length < 2) {
-            var that = this;
-            this.troughBallTimer = setTimeout(function() {
-              that.ThroughBalls = {};
-            }, 100);
-            return;
-          }
-          this.ballCount--;
-          this.ThroughBalls = {};
-          if (0 === this.ballCount) {
-            this.dispatch('gameOver');
-            return;
-          }
+
+
           this.dispatch('TroughEject');
         },
         TroughEject: function() {
           if (this.shooterLaneDown) {
+            console.log('cannot eject, shooter lane already down');
+            return;
+          }
+          if (this.ejecting) {
+            console.log('cannot eject, just ejecting');
+            return;
+          }
+          this.ballCount--;
+          if (0 === this.ballCount) {
+            this.dispatch('gameOver');
             return;
           }
           console.log('eject');
           solenoid.fire('TroughEject');
           var that = this;
+          this.ejecting = true;
           setTimeout(function() {
-            if (!that.shooterLaneDown) {
-              that.dispatch('TroughEject');
-            }
-          }, 100);
+            that.ejecting = false;
+          }, 1000);
+
         },
         states: {
         },
