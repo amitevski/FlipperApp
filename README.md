@@ -2,6 +2,7 @@
 
 [![Build Status](https://drone.io/github.com/amitevski/FlipperApp/status.png)](https://drone.io/github.com/amitevski/FlipperApp/latest)
 [![Coverage Status](https://img.shields.io/coveralls/amitevski/FlipperApp.svg)](https://coveralls.io/r/amitevski/FlipperApp)
+[![bitHound Score](https://app.bithound.io/amitevski/FlipperApp/badges/score.svg)](https://app.bithound.io/amitevski/FlipperApp)
 
 ## Limitations
 
