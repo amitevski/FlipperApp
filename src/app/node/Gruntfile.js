@@ -69,8 +69,31 @@ module.exports = function(grunt) {
         '*.js',
         'games/**/*.js',
         'helpers/**/*.js',
-        'test/**/*.js',
+        'test/**/*.js'
       ]
+    },
+    complexity: {
+      generic: {
+        src: [
+          '*.js',
+          'games/**/*.js'
+        ],
+        exclude: [
+          'Gruntfile.js'
+        ],
+        options: {
+          breakOnErrors: false,
+          //jsLintXML: 'report.xml',         // create XML JSLint-like report
+          //checkstyleXML: 'checkstyle.xml', // create checkstyle report
+          //pmdXML: 'pmd.xml',               // create pmd report
+          errorsOnly: false,               // show only maintainability errors
+          cyclomatic: [3, 7, 12],          // or optionally a single value, like 3
+          halstead: [8, 14, 20],           // or optionally a single value, like 8
+          maintainability: 100,
+          hideComplexFunctions: false,     // only display maintainability
+          broadcast: false                 // broadcast data over event-bus
+        }
+      }
     }
 
   });

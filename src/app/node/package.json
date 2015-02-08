@@ -19,6 +19,7 @@
     "chai": "^1.9.1",
     "coveralls": "^2.10.1",
     "grunt": "^0.4.4",
+    "grunt-complexity": "^0.3.0",
     "grunt-contrib-jshint": "^0.10.0",
     "grunt-mocha-istanbul": "^1.4.2",
     "grunt-simple-mocha": "^0.4.0",
