@@ -108,7 +108,7 @@ module.exports = function(grunt) {
   });
   grunt.loadNpmTasks('grunt-mocha-istanbul');
   // Default task(s).
-  grunt.registerTask('test', ['jshint', 'mocha_istanbul:coveralls']);
+  grunt.registerTask('test', ['jshint', 'complexity', 'mocha_istanbul:coveralls']);
   grunt.registerTask('default', ['test']);
 
 };
