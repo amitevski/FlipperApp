@@ -206,6 +206,21 @@ describe('SWE1 HSM', function() {
       });
     });
 
+    describe('exit event', function() {
+      it('should give 10000000 points to user when sub game is finished', function() {
+        Swe1Hsm.dispatch('ShieldHitDown');
+        Swe1Hsm.dispatch('LeftDropTargetDown');
+        Swe1Hsm.dispatch('RightDropTargetDown');
+        expect(Swe1Hsm.points).to.equal(10000000);
+      });
+      it('reset game message in ui when game is finished', function() {
+        Swe1Hsm.dispatch('ShieldHitDown');
+        Swe1Hsm.dispatch('LeftDropTargetDown');
+        Swe1Hsm.dispatch('RightDropTargetDown');
+        uiMock.resetGameMessage.should.have.been.called;
+      });
+    });
+
     describe('CenterHit substate', function() {
       describe('LeftDropTargetDown event', function() {
         it('should set targets if LeftDropTarget is hit', function() {

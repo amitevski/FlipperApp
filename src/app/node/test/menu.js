@@ -26,6 +26,8 @@ describe('Menu HSM', function() {
       ,startSelectedGame: sandbox.spy()
       ,nextGame: sandbox.spy()
       ,prevGame: sandbox.spy()
+      ,setGameMessage: sandbox.spy()
+      ,resetGameMessage: sandbox.spy()
       ,setPoints: sandbox.spy()
     };
     solenoidMock = {

@@ -264,6 +264,8 @@ module.exports = function(ui, solenoid, lamp) {
           if (this.shooterLaneDown) {
             return;
           }
+          ui.setGameMessage('Ball lost');
+          setTimeout(ui.resetGameMessage, 1000);
           solenoid.fire('TroughEject');
           this.ballCount--;
           if (0 === this.ballCount) {
