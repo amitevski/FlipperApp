@@ -72,14 +72,18 @@ FlipperServer.prototype.bindFlipperEvents =
   function(game) {
     // only emit both up and down events for following events
     var upAndDown = ['LeftFlipperButton', 'RightFlipperButton', 'ShooterLane'];
-    flipperDriver.flipperModel.onAny(function(value){
-      // create different event types for down/up events
-      if (value.state) {
-        game.dispatch(value.name + 'Down', value);
-      } else if (upAndDown.indexOf(value.name) >= 0) {
-        game.dispatch(value.name + 'Up', value);
-      }
-  });
+    // ignore the initial events
+    setTimeout(function() {
+      flipperDriver.flipperModel.onAny(function(value){
+        // create different event types for down/up events
+        if (value.state) {
+          game.dispatch(value.name + 'Down', value);
+        } else if (upAndDown.indexOf(value.name) >= 0) {
+          game.dispatch(value.name + 'Up', value);
+        }
+      });
+    }, 1000);
+
 };
 
 FlipperServer.prototype.run =
